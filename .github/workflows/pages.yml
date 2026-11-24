@@ -27,6 +27,8 @@ jobs:
         run: npm ci
       - name: Build frontend
         env:
+          # URL เว็บแอป Google Apps Script (ถ้าว่างจะใช้ Backend บน Render แทน)
+          VITE_GAS_URL: ${{ vars.GAS_URL }}
           VITE_API_URL: https://wms-office-api.onrender.com/api
         run: npm run build
       - uses: actions/configure-pages@v5
