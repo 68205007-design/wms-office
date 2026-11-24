@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul
 REM เปิดดู/แก้ไขฐานข้อมูล WMS ผ่าน Prisma Studio (http://localhost:5555)
 cd /d "%~dp0"
 netstat -ano | findstr /r /c:":3306 .*LISTENING" >nul
