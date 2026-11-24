@@ -113,12 +113,32 @@ ${rows.map((r, i) => `<tr><td style="border:1px solid #D2C8BA;background:#F3EFE9
 </table>
 <div style="display:flex;gap:2px;background:#F3EFE9;padding:6px 10px;font-size:13px;border-top:1px solid #D2C8BA">${['roles', 'users', 'categories', 'suppliers', 'departments', 'units', 'products', 'requisitions', 'requisition_items', 'notifications', 'stock_movements', 'audit_logs'].map((s) => `<span style="padding:4px 10px;border-radius:4px 4px 0 0;${s === 'products' ? 'background:#fff;color:#8E2A22;font-weight:700' : 'color:#5E554C'}">${s}</span>`).join('')}</div></div>`, { width: 1400 });
 
+
+// แผนภาพสถาปัตยกรรมระบบ
+const N = (t, sub, c = '') => `<div class="box ${c}" style="min-width:210px"><b>${t}</b><div class="lbl">${sub}</div></div>`;
+const R = (t) => `<div style="text-align:center;color:#8E2A22;font-size:15px;min-width:120px">${t}<div style="font-size:30px;line-height:1">⟷</div></div>`;
+await shoot('f09-architecture', `<div class="wrap" style="width:1250px"><div style="display:flex;align-items:center;justify-content:space-between">
+${N('ผู้ใช้งาน', 'เว็บเบราว์เซอร์บนคอมพิวเตอร์<br>หรือโทรศัพท์มือถือ', 'gold')}${R('เปิดลิงก์เว็บไซต์')}
+${N('หน้าเว็บ (React)', 'เผยแพร่บน GitHub Pages')}${R('ส่ง/รับข้อมูล')}
+${N('Google Apps Script', 'ตรวจสิทธิ์ อนุมัติ ตัดสต็อก<br>แจ้งเตือน ออกรายงาน')}${R('อ่าน/บันทึก')}
+${N('Google Sheets', 'ฐานข้อมูล 12 แผ่นงาน<br>+ Google Drive เก็บรูป', 'green')}
+</div><p class="lbl" style="margin:18px 0 0;text-align:center">โค้ดทั้งหมดเก็บใน GitHub และ GitHub Actions สร้างเว็บไซต์ใหม่อัตโนมัติทุกครั้งที่แก้ไขโค้ด</p></div>`);
+
 // 6) ภาพหน้าเว็บจริงบนอินเทอร์เน็ต
 const web = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1.5, locale: 'th-TH' });
 for (const [name, url] of [
   ['w01-github-repo', 'https://github.com/68205007-design/wms-office'],
   ['w02-github-actions', 'https://github.com/68205007-design/wms-office/actions/workflows/pages.yml'],
-  ['w03-live-site', 'https://68205007-design.github.io/wms-office/']
+  ['w03-live-site', 'https://68205007-design.github.io/wms-office/'],
+  ['t01-vscode', 'https://code.visualstudio.com/'],
+  ['t02-nodejs', 'https://nodejs.org/en'],
+  ['t03-react', 'https://react.dev/'],
+  ['t04-vite', 'https://vite.dev/'],
+  ['t05-tailwind', 'https://tailwindcss.com/'],
+  ['t06-sheets', 'https://workspace.google.com/products/sheets/'],
+  ['t07-appsscript', 'https://developers.google.com/apps-script'],
+  ['t08-github', 'https://github.com/'],
+  ['t09-pages', 'https://pages.github.com/']
 ]) {
   try { await web.goto(url, { waitUntil: 'networkidle', timeout: 45000 }); await web.waitForTimeout(2500); await web.screenshot({ path: path.join(out, name + '.png') }); console.log('web', name); }
   catch (e) { console.log('web fail', name, e.message); }
