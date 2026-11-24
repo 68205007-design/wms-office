@@ -30,7 +30,7 @@ export const tokenStore = {
   },
 };
 
-const api = axios.create({ baseURL: API_URL, timeout: 30000 });
+const api = axios.create({ baseURL: API_URL, timeout: 90000 });
 
 api.interceptors.request.use((config) => {
   const token = tokenStore.get();

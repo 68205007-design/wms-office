@@ -31,7 +31,11 @@ export default function Login() {
       await login(form.username.trim(), form.password);
       navigate(location.state?.from?.pathname || '/', { replace: true });
     } catch (err) {
-      setError(errorMessage(err, 'เข้าสู่ระบบไม่สำเร็จ'));
+      setError(
+        err?.response
+          ? errorMessage(err, 'เข้าสู่ระบบไม่สำเร็จ')
+          : 'เซิร์ฟเวอร์กำลังเริ่มทำงาน (อาจใช้เวลาประมาณ 1 นาทีหลังไม่มีการใช้งาน) กรุณากดเข้าสู่ระบบอีกครั้ง',
+      );
     } finally {
       setLoading(false);
     }
