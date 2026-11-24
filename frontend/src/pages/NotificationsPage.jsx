@@ -67,7 +67,7 @@ export default function NotificationsPage() {
     <Notice message={error} />
     <section className="grid gap-4 md:grid-cols-2">
       {[{ title: "วัสดุใกล้หมด", rows: lowStock, color: "amber", stock: "low" }, { title: "วัสดุหมดคลัง", rows: outOfStock, color: "rose", stock: "out" }].map(({ title, rows, color, stock }) => <div key={title} className="surface-card overflow-hidden">
-        <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3.5"><div className="flex items-center gap-2"><span className={`grid h-8 w-8 place-items-center rounded-lg ${color === "amber" ? "bg-amber-50 text-amber-600" : "bg-rose-50 text-rose-600"}`}><CircleAlert size={16} /></span><h2 className="text-sm font-bold text-[#142B4A]">{title}</h2></div><span className="text-xs text-slate-400">{rows.length} รายการ</span></div>
+        <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3.5"><div className="flex items-center gap-2"><span className={`grid h-8 w-8 place-items-center rounded-lg ${color === "amber" ? "bg-amber-50 text-amber-600" : "bg-rose-50 text-rose-600"}`}><CircleAlert size={16} /></span><h2 className="text-sm font-bold text-[#6B1A17]">{title}</h2></div><span className="text-xs text-slate-400">{rows.length} รายการ</span></div>
         <div className="divide-y divide-slate-50">
           {rows.slice(0, 5).map((product) => <button key={product.id} onClick={() => openProduct(product, stock)} className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-slate-50">
             <span className={`grid h-8 w-8 place-items-center rounded-lg ${color === "amber" ? "bg-amber-50 text-amber-600" : "bg-rose-50 text-rose-600"}`}><Package size={15} /></span>
@@ -79,7 +79,7 @@ export default function NotificationsPage() {
       </div>)}
     </section>
     <section className="surface-card overflow-hidden">
-      <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4"><div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-xl bg-blue-50 text-blue-700"><Bell size={18} /></span><div><h2 className="text-sm font-bold text-[#142B4A]">รายการแจ้งเตือน</h2><p className="mt-0.5 text-[11px] text-slate-400">ยังไม่อ่าน {unreadCount} รายการ</p></div></div></div>
+      <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4"><div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-xl bg-blue-50 text-blue-700"><Bell size={18} /></span><div><h2 className="text-sm font-bold text-[#6B1A17]">รายการแจ้งเตือน</h2><p className="mt-0.5 text-[11px] text-slate-400">ยังไม่อ่าน {unreadCount} รายการ</p></div></div></div>
       <div className="divide-y divide-slate-100">
         {loading ? [1, 2, 3].map((row) => <div key={row} className="animate-pulse space-y-3 px-5 py-5"><div className="h-4 w-48 rounded bg-slate-100" /><div className="h-3 w-3/4 rounded bg-slate-100" /></div>) : notifications.map((notification) => <button key={notification.id} onClick={() => openNotification(notification)} className={`flex w-full items-start gap-3 px-5 py-4 text-left transition hover:bg-blue-50/40 ${notification.readAt ? "bg-white" : "bg-blue-50/30"}`}>
           <span className={`mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl ${notification.readAt ? "bg-slate-50 text-slate-400" : "bg-blue-50 text-blue-700"}`}>{notification.readAt ? <CircleCheck size={17} /> : <CircleDot size={17} />}</span>

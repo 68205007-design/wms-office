@@ -103,19 +103,20 @@ export default function Shell() {
     setSearch("");
   };
 
-  return <div className="min-h-screen bg-[#F5F7FB] lg:flex">
+  return <div className="min-h-screen bg-[#F7F2EA] lg:flex">
     {mobileOpen && <button aria-label="ปิดเมนู" className="fixed inset-0 z-30 bg-slate-950/40 backdrop-blur-[2px] lg:hidden" onClick={() => setMobileOpen(false)} />}
-    <aside className={`fixed inset-y-0 left-0 z-40 flex flex-col bg-[#142B4A] text-slate-200 shadow-xl shadow-slate-950/10 transition-all duration-200 lg:static lg:translate-x-0 ${collapsed ? "w-[84px]" : "w-[264px]"} ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
-      <div className={`flex h-[82px] shrink-0 items-center border-b border-white/[.08] ${collapsed ? "justify-center px-3" : "gap-3 px-5"}`}>
-        <img src={SYSTEM_LOGO} alt="" className="h-11 w-11 shrink-0 rounded-[14px] bg-white object-cover shadow-lg shadow-black/10" />
-        {!collapsed && <div className="min-w-0"><p className="line-clamp-2 text-[10px] font-bold leading-4 text-white">{SYSTEM_NAME}</p><p className="mt-0.5 truncate text-[9px] font-medium text-sky-200">{COLLEGE_NAME}</p></div>}
+    <aside className={`fixed inset-y-0 left-0 z-40 flex flex-col bg-gradient-to-b from-[#7A231B] via-[#5E1814] to-[#3F0F0D] text-slate-200 shadow-xl shadow-slate-950/10 transition-all duration-200 lg:static lg:translate-x-0 ${collapsed ? "w-[84px]" : "w-[264px]"} ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <div aria-hidden="true" className="h-1 shrink-0 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
+      <div className={`flex h-[82px] shrink-0 items-center border-b border-gold-300/20 ${collapsed ? "justify-center px-3" : "gap-3 px-5"}`}>
+        <img src={SYSTEM_LOGO} alt="" className="h-11 w-11 shrink-0 rounded-full bg-white object-cover shadow-lg shadow-black/20 ring-2 ring-gold-400" />
+        {!collapsed && <div className="min-w-0"><p className="line-clamp-2 text-[10px] font-bold leading-4 text-white">{SYSTEM_NAME}</p><p className="mt-0.5 truncate text-[9px] font-medium text-gold-300">{COLLEGE_NAME}</p></div>}
         <button className="ml-auto rounded-lg p-2 text-slate-400 hover:bg-white/10 hover:text-white lg:hidden" onClick={() => setMobileOpen(false)} aria-label="ปิดเมนู"><X size={20} /></button>
       </div>
-      {!collapsed && <div className="px-5 pb-2 pt-6 text-[10px] font-semibold uppercase tracking-[.18em] text-slate-400/80">เมนูหลัก</div>}
+      {!collapsed && <div className="px-5 pb-2 pt-6 text-[10px] font-semibold uppercase tracking-[.18em] text-gold-300/70">เมนูหลัก</div>}
       <nav className={`scrollbar-thin mt-3 flex-1 space-y-1.5 overflow-y-auto ${collapsed ? "px-3" : "px-3.5"}`}>
         {navigation.filter((item) => !item.roles || item.roles.includes(user?.role)).map(({ to, label, icon: Icon }) =>
           <NavLink key={to} to={to} end={to === "/"} onClick={() => setMobileOpen(false)} title={collapsed ? label : undefined}
-            className={({ isActive }) => `group relative flex h-11 items-center rounded-xl text-[13px] transition-colors duration-150 ${collapsed ? "justify-center px-0" : "gap-3 px-3"} ${isActive ? "bg-white font-semibold text-[#142B4A] shadow-md shadow-black/10" : "text-slate-300 hover:bg-white/[.08] hover:text-white"}`}>
+            className={({ isActive }) => `group relative flex h-11 items-center rounded-xl text-[13px] transition-colors duration-150 ${collapsed ? "justify-center px-0" : "gap-3 px-3"} ${isActive ? "bg-gradient-to-r from-gold-100 to-white font-semibold text-maroon-800 shadow-md shadow-black/20 before:absolute before:inset-y-2 before:left-0 before:w-1 before:rounded-r before:bg-gold-500" : "text-gold-50/80 hover:bg-white/[.08] hover:text-white"}`}>
             <Icon size={18} strokeWidth={1.9} /><span className={`${collapsed ? "hidden" : "flex-1"}`}>{label}</span>
             {!collapsed && <ChevronRight size={15} className="opacity-0 transition group-[.active]:opacity-70" />}
           </NavLink>
@@ -126,20 +127,20 @@ export default function Shell() {
           {collapsed ? <PanelLeftOpen size={18} /> : <><PanelLeftClose size={18} /><span className="text-xs">ย่อเมนู</span></>}
         </button>
         <div className={`mt-2 flex items-center rounded-xl bg-white/[.06] ${collapsed ? "justify-center p-2" : "gap-3 p-2.5"}`}>
-          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#DCE9FF] text-sm font-bold text-[#1E4D8C]">{user?.name?.slice(0, 1)?.toUpperCase()}</div>
+          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gold-200 text-sm font-bold text-maroon-800">{user?.name?.slice(0, 1)?.toUpperCase()}</div>
           {!collapsed && <div className="min-w-0 flex-1 text-left"><p className="truncate text-xs font-semibold text-white">{user?.name}</p><p className="mt-0.5 text-[10px] text-slate-400">{roleLabel}</p></div>}
           {!collapsed && <button onClick={logout} className="rounded-lg p-2 text-slate-400 transition hover:bg-white/10 hover:text-white" title="ออกจากระบบ"><LogOut size={16} /></button>}
         </div>
       </div>
     </aside>
     <main className="min-w-0 flex-1">
-      <header className="sticky top-0 z-20 flex min-h-[76px] items-center justify-between gap-4 border-b border-slate-200/80 bg-white/95 px-4 backdrop-blur-xl md:px-7">
+      <header className="sticky top-0 z-20 flex min-h-[76px] items-center justify-between gap-4 border-b border-gold-200/70 bg-[#FFFDF9]/95 px-4 backdrop-blur-xl shadow-[0_1px_0_0_rgba(200,150,62,.25)] md:px-7">
         <div className="flex min-w-0 items-center gap-3">
           <button onClick={() => setMobileOpen(true)} className="rounded-xl p-2 text-slate-600 transition hover:bg-slate-100 lg:hidden" aria-label="เปิดเมนู"><Menu size={21} /></button>
-          <div className="min-w-0"><p className="hidden max-w-[48vw] truncate text-[11px] text-slate-400 sm:block">{SYSTEM_NAME}</p><p className="truncate text-[15px] font-semibold text-[#142B4A]">{sectionName}</p></div>
+          <div className="min-w-0"><p className="hidden max-w-[48vw] truncate text-[11px] text-slate-400 sm:block">{SYSTEM_NAME}</p><p className="truncate text-[15px] font-semibold text-[#6B1A17]">{sectionName}</p></div>
         </div>
         <form onSubmit={submitSearch} className="hidden w-full max-w-[390px] lg:block">
-          <div className="group flex h-10 items-center rounded-xl border border-slate-200 bg-[#F8FAFC] px-3 transition focus-within:border-blue-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-blue-50">
+          <div className="group flex h-10 items-center rounded-xl border border-slate-200 bg-[#FAF7F2] px-3 transition focus-within:border-blue-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-blue-50">
             <Search size={17} className="shrink-0 text-slate-400 group-focus-within:text-blue-600" />
             <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="ค้นหาสินค้า, SKU หรือ Barcode" className="h-full w-full border-0 bg-transparent px-2.5 text-xs outline-none placeholder:text-slate-400" aria-label="ค้นหาสินค้า" />
             <kbd className="hidden rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] text-slate-400 xl:inline">Enter</kbd>
@@ -169,7 +170,7 @@ export default function Shell() {
           </div>
           <div className="relative">
             <button onClick={() => { setAccountOpen((value) => !value); setNotificationsOpen(false); }} className="flex items-center gap-2 rounded-xl p-1.5 transition hover:bg-slate-100" aria-label="เมนูบัญชีผู้ใช้" aria-expanded={accountOpen}>
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#DCE9FF] text-sm font-bold text-[#1E4D8C]">{user?.name?.slice(0, 1)?.toUpperCase()}</span>
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-gold-200 text-sm font-bold text-maroon-800">{user?.name?.slice(0, 1)?.toUpperCase()}</span>
               <span className="hidden max-w-28 text-left xl:block"><span className="block truncate text-xs font-semibold text-slate-700">{user?.name}</span><span className="mt-0.5 block text-[10px] text-slate-400">{roleLabel}</span></span>
               <ChevronDown size={15} className="hidden text-slate-400 xl:block" />
             </button>

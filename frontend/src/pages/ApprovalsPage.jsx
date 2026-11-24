@@ -53,13 +53,13 @@ export default function ApprovalsPage() {
     <Notice message={error} />
     <section className="surface-card overflow-hidden">
       <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
-        <div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-xl bg-amber-50 text-amber-600"><ClipboardCheck size={18} /></span><div><h2 className="text-sm font-bold text-[#142B4A]">คำขอรอพิจารณา</h2><p className="mt-0.5 text-[11px] text-slate-400">{requests.length} รายการ</p></div></div>
+        <div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-xl bg-amber-50 text-amber-600"><ClipboardCheck size={18} /></span><div><h2 className="text-sm font-bold text-[#6B1A17]">คำขอรอพิจารณา</h2><p className="mt-0.5 text-[11px] text-slate-400">{requests.length} รายการ</p></div></div>
       </div>
       <div className="divide-y divide-slate-100">
         {loading ? [1, 2, 3].map((row) => <div key={row} className="animate-pulse space-y-3 px-5 py-5"><div className="h-4 w-44 rounded bg-slate-100" /><div className="h-3 w-2/3 rounded bg-slate-100" /></div>) : requests.map((request) => <article key={request.id} className="px-5 py-5 transition-colors hover:bg-blue-50/20">
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
             <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-center gap-2"><h3 className="text-sm font-bold text-[#142B4A]">{request.requestNumber}</h3><span className="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-semibold text-amber-700">รออนุมัติ</span></div>
+              <div className="flex flex-wrap items-center gap-2"><h3 className="text-sm font-bold text-[#6B1A17]">{request.requestNumber}</h3><span className="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-semibold text-amber-700">รออนุมัติ</span></div>
               <p className="mt-1 text-xs text-slate-500">{request.requester.name} · {request.department.name} · {new Date(request.createdAt).toLocaleString("th-TH")}</p>
               <p className="mt-2 text-sm text-slate-700">{request.purpose}</p>
               <div className="mt-3 flex flex-wrap gap-2">{request.items.map((item) => <span key={item.id} className="rounded-lg bg-slate-50 px-2.5 py-1.5 text-[11px] text-slate-600">{item.product.sku} · {item.product.name} <strong className="ml-1 text-slate-800">{item.quantity} {item.product.unit}</strong><span className={`ml-2 ${item.product.stockQuantity < item.quantity ? "text-rose-600" : "text-slate-400"}`}>คงเหลือ {item.product.stockQuantity}</span></span>)}</div>

@@ -89,13 +89,13 @@ export default function RequisitionsPage() {
     {canRequest && <section className="surface-card p-5 sm:p-6">
       <div className="mb-5 flex items-center gap-3">
         <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-blue-700"><Send size={19} /></span>
-        <div><h2 className="text-sm font-bold text-[#142B4A]">สร้างคำขอเบิก</h2><p className="mt-0.5 text-xs text-slate-400">ระบบจะส่งให้ผู้ดูแลพิจารณาก่อนจ่ายวัสดุ</p></div>
+        <div><h2 className="text-sm font-bold text-[#6B1A17]">สร้างคำขอเบิก</h2><p className="mt-0.5 text-xs text-slate-400">ระบบจะส่งให้ผู้ดูแลพิจารณาก่อนจ่ายวัสดุ</p></div>
       </div>
       {!user.department?.id ? <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">บัญชีนี้ยังไม่ได้กำหนดแผนก กรุณาติดต่อผู้ดูแลระบบก่อนส่งคำขอ</div> : <form onSubmit={submit} className="space-y-4">
         <div className="space-y-3">
           {items.map((item, index) => {
             const selected = products.find((product) => product.id === Number(item.productId));
-            return <div key={index} className="grid gap-3 rounded-xl border border-slate-100 bg-[#FBFCFE] p-3 sm:grid-cols-[minmax(0,1fr)_150px_40px] sm:items-end">
+            return <div key={index} className="grid gap-3 rounded-xl border border-slate-100 bg-[#FCFAF6] p-3 sm:grid-cols-[minmax(0,1fr)_150px_40px] sm:items-end">
               <label className="text-xs font-semibold text-slate-600">วัสดุ
                 <select required value={item.productId} onChange={(event) => updateItem(index, "productId", event.target.value)} className="mt-1.5 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-normal text-slate-700">
                   <option value="">เลือกวัสดุ</option>
@@ -116,14 +116,14 @@ export default function RequisitionsPage() {
         </label>
         <div className="flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-slate-400">แผนก: <span className="font-semibold text-slate-600">{user.department.name}</span></p>
-          <button type="submit" disabled={busy || !products.length} className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#142B4A] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-60">{busy ? "กำลังส่งคำขอ..." : <><Send size={16} />ส่งคำขอเบิก</>}</button>
+          <button type="submit" disabled={busy || !products.length} className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6B1A17] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-60">{busy ? "กำลังส่งคำขอ..." : <><Send size={16} />ส่งคำขอเบิก</>}</button>
         </div>
       </form>}
     </section>}
 
     <section className="surface-card overflow-hidden">
       <div className="flex flex-col gap-3 border-b border-slate-100 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-xl bg-violet-50 text-violet-600"><ClipboardList size={18} /></span><div><h2 className="text-sm font-bold text-[#142B4A]">ประวัติคำขอเบิก</h2><p className="mt-0.5 text-[11px] text-slate-400">รายการคำขอและสถานะล่าสุด</p></div></div>
+        <div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-xl bg-violet-50 text-violet-600"><ClipboardList size={18} /></span><div><h2 className="text-sm font-bold text-[#6B1A17]">ประวัติคำขอเบิก</h2><p className="mt-0.5 text-[11px] text-slate-400">รายการคำขอและสถานะล่าสุด</p></div></div>
         <div className="flex items-center gap-2">
           <Search size={15} className="text-slate-400" />
           <select value={filter} onChange={(event) => { setFilter(event.target.value); setPage(1); }} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600">
@@ -135,7 +135,7 @@ export default function RequisitionsPage() {
         {loading ? [1, 2, 3].map((row) => <div key={row} className="animate-pulse space-y-3 px-5 py-5"><div className="h-4 w-40 rounded bg-slate-100" /><div className="h-3 w-3/4 rounded bg-slate-100" /></div>) : requests.map((request) => <article key={request.id} className="px-5 py-4 transition-colors hover:bg-blue-50/20">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2"><h3 className="text-sm font-bold text-[#142B4A]">{request.requestNumber}</h3><span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${statusLabels[request.status][1]}`}>{statusLabels[request.status][0]}</span></div>
+              <div className="flex flex-wrap items-center gap-2"><h3 className="text-sm font-bold text-[#6B1A17]">{request.requestNumber}</h3><span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${statusLabels[request.status][1]}`}>{statusLabels[request.status][0]}</span></div>
               <p className="mt-1 text-xs text-slate-500">{request.requester.name} · {request.department.name} · {new Date(request.createdAt).toLocaleString("th-TH")}</p>
               <p className="mt-2 text-xs text-slate-600">{request.purpose}</p>
               <div className="mt-3 flex flex-wrap gap-2">{request.items.map((item) => <span key={item.id} className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 px-2.5 py-1.5 text-[11px] text-slate-600"><Package size={13} className="text-slate-400" />{item.product.name} <strong className="text-slate-800">{item.quantity} {item.product.unit}</strong></span>)}</div>
