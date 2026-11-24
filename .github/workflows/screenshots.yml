@@ -25,9 +25,10 @@ jobs:
       - name: Take screenshots
         working-directory: tools/screenshots
         run: |
-          npm i --no-package-lock playwright@1.49.1
+          npm i --no-package-lock playwright@1.49.1 highlight.js@11
           npx playwright install --with-deps chromium
           node shoot.mjs
+          node figures.mjs
       - name: Publish to screenshots branch
         run: |
           cd tools/screenshots/out
