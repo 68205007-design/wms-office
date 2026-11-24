@@ -1,0 +1,36 @@
+name: Screenshots
+on:
+  workflow_dispatch:
+  push:
+    paths: ["tools/screenshots/**", ".github/workflows/screenshots.yml"]
+permissions:
+  contents: write
+jobs:
+  shoot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - name: Build frontend against demo server
+        run: npm run build --workspace frontend
+        env:
+          VITE_GAS_URL: http://localhost:8787/
+      - name: Start demo server and preview
+        run: |
+          node tools/screenshots/server.cjs &
+          npx --workspace frontend vite preview --port 4173 --strictPort &
+          sleep 8
+      - name: Take screenshots
+        working-directory: tools/screenshots
+        run: |
+          npm i --no-package-lock playwright@1.49.1
+          npx playwright install --with-deps chromium
+          node shoot.mjs
+      - name: Publish to screenshots branch
+        run: |
+          cd tools/screenshots/out
+          git init -q -b screenshots && git add . 
+          git -c user.name=github-actions -c user.email=actions@github.com commit -qm "ภาพหน้าจอระบบ (ข้อมูลตัวอย่าง)"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" screenshots
