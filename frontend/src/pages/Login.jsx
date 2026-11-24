@@ -4,6 +4,9 @@ import { BarChart3, Eye, EyeOff, Loader2, Lock, PackageCheck, ShieldCheck, User,
 import { useAuth } from '../context/AuthContext';
 import { errorMessage } from '../api/client';
 
+// แสดงกล่องบัญชีทดสอบเฉพาะตอนพัฒนา หรือเมื่อกำหนด VITE_SHOW_DEMO=true
+const SHOW_DEMO = import.meta.env.DEV || import.meta.env.VITE_SHOW_DEMO === 'true';
+
 const DEMO = [
   { role: 'ผู้ดูแลระบบ', u: 'admin', p: 'Admin@1234' },
   { role: 'เจ้าหน้าที่คลัง', u: 'warehouse', p: 'Store@1234' },
@@ -138,6 +141,7 @@ export default function Login() {
             </form>
           </div>
 
+          {SHOW_DEMO && (
           <div className="mt-5 rounded-2xl border border-dashed border-slate-300 bg-white/60 p-4">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">บัญชีทดสอบ (คลิกเพื่อกรอก)</p>
             <div className="grid grid-cols-2 gap-2">
@@ -156,6 +160,7 @@ export default function Login() {
               ))}
             </div>
           </div>
+          )}
         </div>
       </div>
     </div>

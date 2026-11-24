@@ -130,7 +130,8 @@ async function main() {
     users[u.username] = await prisma.user.create({
       data: {
         username: u.username,
-        passwordHash: await bcrypt.hash(u.password, 10),
+        // SEED_PASSWORD (ถ้ากำหนด) ใช้แทนรหัสทดสอบทุกบัญชี เหมาะกับการเปิดใช้งานสาธารณะ
+        passwordHash: await bcrypt.hash(process.env.SEED_PASSWORD || u.password, 10),
         fullName: u.fullName,
         role: u.role,
         position: u.position,
@@ -333,7 +334,7 @@ async function main() {
   };
   console.log('✓ Seed สำเร็จ', counts);
   console.log('\nบัญชีทดสอบ:');
-  for (const u of USERS.slice(0, 4)) console.log(`  ${u.role.padEnd(10)} ${u.username.padEnd(10)} / ${u.password}`);
+  for (const u of USERS.slice(0, 4)) console.log(`  ${u.role.padEnd(10)} ${u.username.padEnd(10)} / ${process.env.SEED_PASSWORD ? '(SEED_PASSWORD)' : u.password}`);
 }
 
 main()
