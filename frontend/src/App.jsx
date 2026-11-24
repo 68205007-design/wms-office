@@ -1,70 +1,52 @@
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { ShieldAlert } from 'lucide-react';
-import { useAuth } from './context/AuthContext';
-import { can } from './utils/permissions';
-import Layout from './components/layout/Layout';
-import { EmptyState, PageLoader } from './components/ui';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Materials from './pages/Materials';
-import StockIn from './pages/StockIn';
-import NewRequisition from './pages/NewRequisition';
-import MyRequests from './pages/MyRequests';
-import Approvals from './pages/Approvals';
-import History from './pages/History';
-import Reports from './pages/Reports';
-import Settings from './pages/Settings';
-import Notifications from './pages/Notifications';
+import { Suspense, lazy } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useAuth } from "./context/AuthContext.jsx";
+import Shell from "./components/Shell.jsx";
 
-function Protected({ perm, children }) {
-  const { user } = useAuth();
-  if (perm && !can(user, perm)) {
-    return (
-      <div className="card">
-        <EmptyState icon={ShieldAlert} title="ไม่มีสิทธิ์เข้าถึง" description="บัญชีของคุณไม่มีสิทธิ์ใช้งานหน้านี้ หากต้องการใช้งานกรุณาติดต่อผู้ดูแลระบบ" />
-      </div>
-    );
-  }
-  return children;
-}
+const LoginPage = lazy(() => import("./pages/LoginPage.jsx"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage.jsx"));
+const ProductsPage = lazy(() => import("./pages/ProductsPage.jsx"));
+const MovementPage = lazy(() => import("./pages/MovementPage.jsx"));
+const ReportsPage = lazy(() => import("./pages/ReportsPage.jsx"));
+const UsersPage = lazy(() => import("./pages/UsersPage.jsx"));
+const MasterPage = lazy(() => import("./pages/MasterPage.jsx"));
+const SettingsPage = lazy(() => import("./pages/SettingsPage.jsx"));
+const AuditLogsPage = lazy(() => import("./pages/AuditLogsPage.jsx"));
+const RequisitionsPage = lazy(() => import("./pages/RequisitionsPage.jsx"));
+const ApprovalsPage = lazy(() => import("./pages/ApprovalsPage.jsx"));
+const StockIssuePage = lazy(() => import("./pages/StockIssuePage.jsx"));
+const NotificationsPage = lazy(() => import("./pages/NotificationsPage.jsx"));
 
-function RequireAuth({ children }) {
+function Guard({ children, roles }) {
   const { user, loading } = useAuth();
-  const location = useLocation();
-  if (loading)
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <PageLoader />
-      </div>
-    );
-  if (!user) return <Navigate to="/login" state={{ from: location }} replace />;
+  if (loading) return <div className="grid min-h-screen place-items-center text-slate-500">กำลังตรวจสอบการเข้าสู่ระบบ...</div>;
+  if (!user) return <Navigate to="/login" replace />;
+  if (roles && !roles.includes(user.role)) return <Navigate to="/" replace />;
   return children;
 }
 
 export default function App() {
   const { user } = useAuth();
-  return (
-    <Routes>
-      <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
-      <Route
-        element={
-          <RequireAuth>
-            <Layout />
-          </RequireAuth>
-        }
-      >
-        <Route index element={<Protected perm="dashboard"><Dashboard /></Protected>} />
-        <Route path="materials" element={<Protected perm="materials"><Materials /></Protected>} />
-        <Route path="stock-in" element={<Protected perm="stockIn"><StockIn /></Protected>} />
-        <Route path="requisition/new" element={<Protected perm="requisition"><NewRequisition /></Protected>} />
-        <Route path="my-requests" element={<Protected perm="myRequests"><MyRequests /></Protected>} />
-        <Route path="approvals" element={<Protected perm="approvals"><Approvals /></Protected>} />
-        <Route path="history" element={<Protected perm="history"><History /></Protected>} />
-        <Route path="reports" element={<Protected perm="reports"><Reports /></Protected>} />
-        <Route path="settings" element={<Protected perm="settings"><Settings /></Protected>} />
-        <Route path="notifications" element={<Notifications />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Route>
-    </Routes>
-  );
+  return <Suspense fallback={<div className="grid min-h-screen place-items-center text-slate-500">กำลังโหลดหน้า...</div>}><Routes>
+    <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
+    <Route element={<Guard><Shell /></Guard>}>
+      <Route index element={<DashboardPage />} />
+      <Route path="products" element={<ProductsPage />} />
+      <Route path="requisitions" element={<RequisitionsPage />} />
+      <Route path="stock-in" element={<Guard roles={["SUPER_ADMIN", "ADMIN", "STAFF", "WAREHOUSE_STAFF"]}><MovementPage type="in" /></Guard>} />
+      <Route path="approvals" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><ApprovalsPage /></Guard>} />
+      <Route path="stock-issue" element={<Guard roles={["SUPER_ADMIN", "ADMIN", "STAFF", "WAREHOUSE_STAFF"]}><StockIssuePage /></Guard>} />
+      <Route path="stock-out" element={<Navigate to="/requisitions" replace />} />
+      <Route path="notifications" element={<NotificationsPage />} />
+      <Route path="reports" element={<ReportsPage />} />
+      <Route path="users" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><UsersPage /></Guard>} />
+      <Route path="audit-logs" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><AuditLogsPage /></Guard>} />
+      <Route path="categories" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><MasterPage resource="categories" title="หมวดหมู่สินค้า" fields={["name"]} /></Guard>} />
+      <Route path="suppliers" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><MasterPage resource="suppliers" title="ผู้จำหน่าย" fields={["name", "contactPerson", "phone", "email"]} /></Guard>} />
+      <Route path="departments" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><MasterPage resource="departments" title="แผนก" fields={["name"]} /></Guard>} />
+      <Route path="units" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><MasterPage resource="units" title="หน่วยนับ" fields={["name", "abbreviation"]} /></Guard>} />
+      <Route path="settings" element={<SettingsPage />} />
+    </Route>
+    <Route path="*" element={<Navigate to="/" replace />} />
+  </Routes></Suspense>;
 }

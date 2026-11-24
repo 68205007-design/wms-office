@@ -1,0 +1,12 @@
+.git
+.gitignore
+.env*
+.mysql-admin
+node_modules
+**/node_modules
+frontend/dist
+**/dist
+coverage
+*.log
+backend/uploads/*
+!backend/uploads/.gitkeep

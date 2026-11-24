@@ -1,20 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { HashRouter } from 'react-router-dom';
-import App from './App';
-import { AuthProvider } from './context/AuthContext';
-import { ToastProvider } from './context/ToastContext';
-import './index.css';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
+import { ToastProvider } from "./context/ToastContext.jsx";
+import "@fontsource/sarabun/400.css";
+import "@fontsource/sarabun/500.css";
+import "@fontsource/sarabun/600.css";
+import "@fontsource/sarabun/700.css";
+import "./styles.css";
 
-// ใช้ HashRouter เพื่อให้ทำงานบน GitHub Pages ได้ (ไม่มี server rewrite)
-ReactDOM.createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <HashRouter>
-      <ToastProvider>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
-      </ToastProvider>
-    </HashRouter>
-  </React.StrictMode>,
+    <BrowserRouter>
+      <AuthProvider><ToastProvider><App /></ToastProvider></AuthProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );
