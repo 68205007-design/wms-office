@@ -1,0 +1,24 @@
+# Backend บน Render (ฟรี) + ฐานข้อมูล TiDB Cloud Starter (MySQL compatible, ฟรี)
+services:
+  - type: web
+    name: wms-office-api
+    runtime: node
+    region: singapore
+    plan: free
+    rootDir: backend
+    buildCommand: npm install && npx prisma generate
+    startCommand: export SHADOW_DATABASE_URL="${SHADOW_DATABASE_URL:-$DATABASE_URL}" && npx prisma migrate deploy && node prisma/seed.js && node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "1"
+      - key: CORS_ORIGIN
+        value: https://68205007-design.github.io
+      - key: SUPER_ADMIN_EMAIL
+        value: admin@wms.local
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false # mysql://USER:PASSWORD@HOST:4000/wms?sslaccept=strict

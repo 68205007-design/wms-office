@@ -1,5 +1,6 @@
-# เผยแพร่หน้าแนะนำโปรเจกต์ (index.html ที่โฟลเดอร์ราก) บน GitHub Pages
-name: Deploy intro page to GitHub Pages
+# Build ระบบ WMS (frontend) แล้ว deploy ขึ้น GitHub Pages
+# Backend อยู่ที่ Render: https://wms-office-api.onrender.com/api
+name: Deploy WMS to GitHub Pages
 on:
   push:
     branches: [main]
@@ -19,11 +20,18 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Prepare site
-        run: mkdir _site && cp index.html README.md _site/ && cp -r frontend/public/branding _site/ 2>/dev/null || true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install
+        run: npm ci
+      - name: Build frontend
+        env:
+          VITE_API_URL: https://wms-office-api.onrender.com/api
+        run: npm run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: frontend/dist
       - id: deployment
         uses: actions/deploy-pages@v4

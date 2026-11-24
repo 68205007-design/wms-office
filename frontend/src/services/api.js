@@ -12,7 +12,7 @@ const apiBaseUrl = configuredApiUrl && (loopbackHosts.has(pageHost) || !loopback
 
 export const api = axios.create({
   baseURL: apiBaseUrl,
-  timeout: 20000
+  timeout: 90000
 });
 
 api.interceptors.request.use((config) => {
