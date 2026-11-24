@@ -1,0 +1,232 @@
+// ระบบเบิก-จ่ายวัสดุสำนักงาน (WMS) - Prisma schema สำหรับ MySQL 8
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN // ผู้ดูแลระบบ
+  WAREHOUSE // เจ้าหน้าที่คลัง
+  USER // ผู้ใช้งานทั่วไป
+  APPROVER // ผู้อนุมัติ
+}
+
+enum TransactionType {
+  IN // รับเข้า
+  OUT // เบิกจ่าย
+  ADJUST // ปรับปรุงยอด
+}
+
+enum RequisitionStatus {
+  PENDING // รออนุมัติ
+  APPROVED // อนุมัติแล้ว
+  REJECTED // ไม่อนุมัติ
+  CANCELLED // ยกเลิก
+}
+
+enum NotificationType {
+  LOW_STOCK
+  OUT_OF_STOCK
+  NEW_REQUEST
+  PENDING_APPROVAL
+  REQUEST_APPROVED
+  REQUEST_REJECTED
+  SYSTEM
+}
+
+model Department {
+  id           Int           @id @default(autoincrement())
+  code         String        @unique @db.VarChar(20)
+  name         String        @unique @db.VarChar(150)
+  description  String?       @db.VarChar(255)
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  users        User[]
+  requisitions Requisition[]
+
+  @@map("departments")
+}
+
+model User {
+  id                Int                @id @default(autoincrement())
+  username          String             @unique @db.VarChar(50)
+  passwordHash      String             @map("password_hash") @db.VarChar(100)
+  fullName          String             @map("full_name") @db.VarChar(150)
+  email             String?            @db.VarChar(150)
+  phone             String?            @db.VarChar(30)
+  position          String?            @db.VarChar(100)
+  role              Role               @default(USER)
+  departmentId      Int?               @map("department_id")
+  isActive          Boolean            @default(true) @map("is_active")
+  tokenVersion      Int                @default(0) @map("token_version")
+  lastLoginAt       DateTime?          @map("last_login_at")
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  department        Department?        @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  materialsCreated  Material[]         @relation("MaterialCreatedBy")
+  transactions      StockTransaction[]
+  requisitions      Requisition[]      @relation("Requester")
+  approvals         Requisition[]      @relation("Approver")
+  notifications     Notification[]
+  auditLogs         AuditLog[]
+
+  @@index([role])
+  @@map("users")
+}
+
+model Category {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique @db.VarChar(100)
+  description String?    @db.VarChar(255)
+  color       String?    @db.VarChar(20)
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  materials   Material[]
+
+  @@map("categories")
+}
+
+model Unit {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique @db.VarChar(50)
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  materials Material[]
+
+  @@map("units")
+}
+
+model Material {
+  id               Int                @id @default(autoincrement())
+  code             String             @unique @db.VarChar(30)
+  name             String             @db.VarChar(200)
+  description      String?            @db.Text
+  imageUrl         String?            @map("image_url") @db.VarChar(500)
+  categoryId       Int                @map("category_id")
+  unitId           Int                @map("unit_id")
+  quantity         Int                @default(0)
+  minQuantity      Int                @default(0) @map("min_quantity")
+  unitPrice        Decimal            @default(0) @map("unit_price") @db.Decimal(12, 2)
+  isActive         Boolean            @default(true) @map("is_active")
+  createdById      Int?               @map("created_by_id")
+  createdAt        DateTime           @default(now()) @map("created_at")
+  updatedAt        DateTime           @updatedAt @map("updated_at")
+  category         Category           @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  unit             Unit               @relation(fields: [unitId], references: [id], onDelete: Restrict)
+  createdBy        User?              @relation("MaterialCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  transactions     StockTransaction[]
+  requisitionItems RequisitionItem[]
+
+  @@index([name])
+  @@index([categoryId])
+  @@map("materials")
+}
+
+model StockTransaction {
+  id              Int             @id @default(autoincrement())
+  materialId      Int             @map("material_id")
+  type            TransactionType
+  quantity        Int
+  unitPrice       Decimal         @default(0) @map("unit_price") @db.Decimal(12, 2)
+  balanceAfter    Int             @map("balance_after")
+  documentNo      String?         @map("document_no") @db.VarChar(50)
+  supplier        String?         @db.VarChar(200)
+  note            String?         @db.VarChar(500)
+  transactionDate DateTime        @map("transaction_date")
+  requisitionId   Int?            @map("requisition_id")
+  createdById     Int             @map("created_by_id")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  material        Material        @relation(fields: [materialId], references: [id], onDelete: Restrict)
+  requisition     Requisition?    @relation(fields: [requisitionId], references: [id], onDelete: SetNull)
+  createdBy       User            @relation(fields: [createdById], references: [id], onDelete: Restrict)
+
+  // ป้องกันการตัดสต็อกซ้ำ: 1 คำขอเบิก ตัดวัสดุแต่ละชนิดได้ครั้งเดียว
+  @@unique([requisitionId, materialId, type], name: "uniq_requisition_material_type")
+  @@index([type, transactionDate])
+  @@index([materialId])
+  @@map("stock_transactions")
+}
+
+model Requisition {
+  id            Int                @id @default(autoincrement())
+  requisitionNo String             @unique @map("requisition_no") @db.VarChar(30)
+  requesterId   Int                @map("requester_id")
+  requesterName String             @map("requester_name") @db.VarChar(150)
+  departmentId  Int                @map("department_id")
+  purpose       String             @db.VarChar(500)
+  requestDate   DateTime           @map("request_date")
+  status        RequisitionStatus  @default(PENDING)
+  approverId    Int?               @map("approver_id")
+  approvedAt    DateTime?          @map("approved_at")
+  rejectReason  String?            @map("reject_reason") @db.VarChar(500)
+  stockDeducted Boolean            @default(false) @map("stock_deducted")
+  createdAt     DateTime           @default(now()) @map("created_at")
+  updatedAt     DateTime           @updatedAt @map("updated_at")
+  requester     User               @relation("Requester", fields: [requesterId], references: [id], onDelete: Restrict)
+  approver      User?              @relation("Approver", fields: [approverId], references: [id], onDelete: SetNull)
+  department    Department         @relation(fields: [departmentId], references: [id], onDelete: Restrict)
+  items         RequisitionItem[]
+  transactions  StockTransaction[]
+
+  @@index([status])
+  @@index([requestDate])
+  @@map("requisitions")
+}
+
+model RequisitionItem {
+  id            Int         @id @default(autoincrement())
+  requisitionId Int         @map("requisition_id")
+  materialId    Int         @map("material_id")
+  quantity      Int
+  unitPrice     Decimal     @default(0) @map("unit_price") @db.Decimal(12, 2)
+  note          String?     @db.VarChar(255)
+  requisition   Requisition @relation(fields: [requisitionId], references: [id], onDelete: Cascade)
+  material      Material    @relation(fields: [materialId], references: [id], onDelete: Restrict)
+
+  @@unique([requisitionId, materialId])
+  @@map("requisition_items")
+}
+
+model Notification {
+  id        Int              @id @default(autoincrement())
+  userId    Int              @map("user_id")
+  type      NotificationType
+  title     String           @db.VarChar(200)
+  message   String           @db.VarChar(500)
+  link      String?          @db.VarChar(255)
+  isRead    Boolean          @default(false) @map("is_read")
+  createdAt DateTime         @default(now()) @map("created_at")
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?     @map("user_id")
+  action    String   @db.VarChar(50)
+  entity    String   @db.VarChar(50)
+  entityId  String?  @map("entity_id") @db.VarChar(50)
+  detail    Json?
+  ipAddress String?  @map("ip_address") @db.VarChar(64)
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model Setting {
+  key       String   @id @db.VarChar(100)
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("settings")
+}

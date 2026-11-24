@@ -1,0 +1,19 @@
+# MySQL 8 สำหรับพัฒนา: docker compose up -d
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: wms-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: wms_db
+      MYSQL_USER: wms
+      MYSQL_PASSWORD: wms_password
+      TZ: Asia/Bangkok
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - wms_mysql:/var/lib/mysql
+volumes:
+  wms_mysql:
