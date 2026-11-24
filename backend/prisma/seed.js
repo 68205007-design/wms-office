@@ -7,6 +7,7 @@
  * รัน: npm run db:seed   (ถ้าเป็น production ต้องใส่ --force)
  */
 import 'dotenv/config';
+import crypto from 'node:crypto';
 import bcrypt from 'bcryptjs';
 import { PrismaClient } from '@prisma/client';
 
@@ -99,6 +100,11 @@ async function main() {
       console.log('มีข้อมูลอยู่แล้วใน production — ข้ามการ seed (ใช้ --force เพื่อบังคับ)');
       return;
     }
+  }
+
+  if (process.env.NODE_ENV === 'production' && !process.argv.includes('--demo')) {
+    await seedProduction();
+    return;
   }
 
   console.log('• ล้างข้อมูลเดิม...');
@@ -335,6 +341,41 @@ async function main() {
   console.log('✓ Seed สำเร็จ', counts);
   console.log('\nบัญชีทดสอบ:');
   for (const u of USERS.slice(0, 4)) console.log(`  ${u.role.padEnd(10)} ${u.username.padEnd(10)} / ${process.env.SEED_PASSWORD ? '(SEED_PASSWORD)' : u.password}`);
+}
+
+/**
+ * Production: สร้างเฉพาะบัญชีผู้ดูแลระบบ (admin) + ข้อมูลหลักที่จำเป็น
+ * รหัสผ่าน admin = SEED_PASSWORD หรือสุ่มใหม่แล้วแสดงใน log ครั้งเดียว
+ */
+async function seedProduction() {
+  const password =
+    process.env.SEED_PASSWORD ||
+    `Wms-${crypto.randomBytes(4).toString('hex')}${crypto.randomInt(10, 99)}`;
+  await prisma.$transaction(async (tx) => {
+    for (const [code, name] of DEPARTMENTS) await tx.department.create({ data: { code, name } });
+    for (const [name, description, color] of CATEGORIES) await tx.category.create({ data: { name, description, color } });
+    for (const name of UNITS) await tx.unit.create({ data: { name } });
+    await tx.user.create({
+      data: {
+        username: 'admin',
+        passwordHash: await bcrypt.hash(password, 10),
+        fullName: 'ผู้ดูแลระบบ',
+        role: 'ADMIN',
+        position: 'ผู้ดูแลระบบ',
+        departmentId: (await tx.department.findFirst({ where: { code: 'ADM' } })).id,
+      },
+    });
+    await tx.setting.createMany({
+      data: [
+        { key: 'org.name', value: JSON.stringify('สำนักงาน') },
+        { key: 'org.shortName', value: JSON.stringify('WMS') },
+        { key: 'stock.defaultMinQuantity', value: '10' },
+      ],
+    });
+  });
+  console.log('✓ สร้างบัญชีผู้ดูแลระบบเรียบร้อย');
+  console.log(`  ADMIN_LOGIN username=admin password=${password}`);
+  console.log('  (กรุณาเปลี่ยนรหัสผ่านหลังเข้าสู่ระบบครั้งแรก)');
 }
 
 main()

@@ -68,7 +68,9 @@ npm run dev                   # http://localhost:5173
 3. ดับเบิลคลิก `scripts\push-github.bat` — สร้าง repo `wms-office` บน GitHub, push โค้ด และเปิด GitHub Pages
 ทดสอบ API ทั้งระบบ: `cd backend && npm run smoke`
 
-### บัญชีทดสอบ
+### บัญชีทดสอบ (เฉพาะการพัฒนาในเครื่อง)
+
+บนเซิร์ฟเวอร์จริง (`NODE_ENV=production`) ระบบจะสร้าง**เฉพาะบัญชี `admin`** พร้อมรหัสผ่านสุ่ม (แสดงใน log ของเซิร์ฟเวอร์ครั้งเดียว) หรือใช้ค่า `SEED_PASSWORD` ถ้ากำหนดไว้ — ผู้ดูแลระบบสร้างบัญชีอื่นเองได้ที่ ตั้งค่าระบบ → จัดการผู้ใช้งาน
 
 | บทบาท | Username | Password |
 |---|---|---|
