@@ -1,21 +1,22 @@
-# Render Blueprint สำหรับ Backend (ต้องมี MySQL ภายนอก เช่น Railway / Aiven / TiDB Cloud)
+# Render (แผนฟรี) สำหรับ Backend + ฐานข้อมูล TiDB Cloud Starter (MySQL compatible, ฟรี)
 services:
   - type: web
-    name: wms-api
+    name: wms-office-api
     runtime: node
+    region: singapore
     rootDir: backend
     plan: free
-    buildCommand: npm install && npx prisma generate && npx prisma db push
-    startCommand: node src/server.js
+    buildCommand: npm install && npx prisma generate
+    startCommand: npx prisma db push --skip-generate && node prisma/seed.js && node src/server.js
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        sync: false
+        sync: false # mysql://USER:PASSWORD@HOST:4000/wms?sslaccept=strict
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ORIGIN
-        sync: false
-      - key: PUBLIC_URL
+        value: https://68205007-design.github.io
+      - key: SEED_PASSWORD
         sync: false
