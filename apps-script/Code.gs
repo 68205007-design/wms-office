@@ -10,6 +10,64 @@
  */
 
 /* =====================================================================
+ * ติดตั้งครั้งแรก — กดเรียกใช้ฟังก์ชันนี้หนึ่งครั้งใน Apps Script
+ * ===================================================================== */
+function setup() {
+  var props = PropertiesService.getScriptProperties();
+  var ss = null;
+  var id = props.getProperty('SPREADSHEET_ID');
+  if (id) { try { ss = SpreadsheetApp.openById(id); } catch (e) { ss = null; } }
+  if (!ss) { try { ss = SpreadsheetApp.getActiveSpreadsheet(); } catch (e) { ss = null; } }
+  if (!ss) ss = SpreadsheetApp.create('WMS ฐานข้อมูลระบบเบิก-จ่ายวัสดุ');
+  props.setProperty('SPREADSHEET_ID', ss.getId());
+  getSecret();
+  DB._ss = ss;
+
+  Object.keys(TABLES).forEach(function (table) {
+    var sheet = ss.getSheetByName(table) || ss.insertSheet(table);
+    var columns = TABLES[table];
+    sheet.getRange(1, 1, 1, columns.length).setValues([columns]).setFontWeight('bold').setBackground('#E8EEF5');
+    sheet.getRange(1, 1, sheet.getMaxRows(), columns.length).setNumberFormat('@');
+    sheet.setFrozenRows(1);
+  });
+  var blank = ss.getSheetByName('Sheet1') || ss.getSheetByName('ชีต1');
+  if (blank && ss.getSheets().length > 1) ss.deleteSheet(blank);
+  DB.reset();
+
+  ROLE_NAMES.forEach(function (name) {
+    if (!DB.all('roles').some(function (r) { return r.name === name; })) DB.insert('roles', { name: name });
+  });
+  DEFAULT_UNITS.forEach(function (name) {
+    if (!DB.all('units').some(function (u) { return u.name === name; })) DB.insert('units', { name: name, isActive: true });
+  });
+
+  var email = 'admin@wms.local';
+  var existing = DB.all('users').filter(function (u) { return u.email === email; })[0];
+  if (existing) {
+    Logger.log('ติดตั้งเรียบร้อย (มีบัญชีผู้ดูแลอยู่แล้ว: ' + email + ')');
+    return;
+  }
+  var password = randomPassword();
+  DB.insert('users', { name: 'System Administrator', email: email, passwordHash: hashPassword(password), roleId: roleIdOf('SUPER_ADMIN'), active: true });
+  Logger.log('===============================================');
+  Logger.log('ติดตั้งเรียบร้อย ฐานข้อมูล: ' + ss.getUrl());
+  Logger.log('บัญชีผู้ดูแลระบบ  อีเมล: ' + email + '   รหัสผ่าน: ' + password);
+  Logger.log('กรุณาจดรหัสผ่านไว้ และเปลี่ยนรหัสหลังเข้าสู่ระบบครั้งแรก');
+  Logger.log('===============================================');
+}
+
+/** ลืมรหัส admin: แก้อีเมลด้านล่างแล้วกดเรียกใช้ จะสุ่มรหัสใหม่ให้ใน log */
+function resetAdminPassword() {
+  var email = 'admin@wms.local';
+  var user = DB.all('users').filter(function (u) { return u.email === email; })[0];
+  if (!user) throw new Error('ไม่พบบัญชี ' + email);
+  var password = randomPassword();
+  DB.update('users', user.id, { passwordHash: hashPassword(password), active: true });
+  Logger.log('รหัสผ่านใหม่ของ ' + email + ' คือ ' + password);
+}
+
+
+/* =====================================================================
  * โครงสร้างตาราง
  * ===================================================================== */
 var TABLES = {
@@ -1150,59 +1208,3 @@ function doGet(e) {
   return jsonOutput(handle({ method: 'GET', path: '/health' }));
 }
 
-/* =====================================================================
- * ติดตั้งครั้งแรก — กดเรียกใช้ฟังก์ชันนี้หนึ่งครั้งใน Apps Script
- * ===================================================================== */
-function setup() {
-  var props = PropertiesService.getScriptProperties();
-  var ss = null;
-  var id = props.getProperty('SPREADSHEET_ID');
-  if (id) { try { ss = SpreadsheetApp.openById(id); } catch (e) { ss = null; } }
-  if (!ss) { try { ss = SpreadsheetApp.getActiveSpreadsheet(); } catch (e) { ss = null; } }
-  if (!ss) ss = SpreadsheetApp.create('WMS ฐานข้อมูลระบบเบิก-จ่ายวัสดุ');
-  props.setProperty('SPREADSHEET_ID', ss.getId());
-  getSecret();
-  DB._ss = ss;
-
-  Object.keys(TABLES).forEach(function (table) {
-    var sheet = ss.getSheetByName(table) || ss.insertSheet(table);
-    var columns = TABLES[table];
-    sheet.getRange(1, 1, 1, columns.length).setValues([columns]).setFontWeight('bold').setBackground('#E8EEF5');
-    sheet.getRange(1, 1, sheet.getMaxRows(), columns.length).setNumberFormat('@');
-    sheet.setFrozenRows(1);
-  });
-  var blank = ss.getSheetByName('Sheet1') || ss.getSheetByName('ชีต1');
-  if (blank && ss.getSheets().length > 1) ss.deleteSheet(blank);
-  DB.reset();
-
-  ROLE_NAMES.forEach(function (name) {
-    if (!DB.all('roles').some(function (r) { return r.name === name; })) DB.insert('roles', { name: name });
-  });
-  DEFAULT_UNITS.forEach(function (name) {
-    if (!DB.all('units').some(function (u) { return u.name === name; })) DB.insert('units', { name: name, isActive: true });
-  });
-
-  var email = 'admin@wms.local';
-  var existing = DB.all('users').filter(function (u) { return u.email === email; })[0];
-  if (existing) {
-    Logger.log('ติดตั้งเรียบร้อย (มีบัญชีผู้ดูแลอยู่แล้ว: ' + email + ')');
-    return;
-  }
-  var password = randomPassword();
-  DB.insert('users', { name: 'System Administrator', email: email, passwordHash: hashPassword(password), roleId: roleIdOf('SUPER_ADMIN'), active: true });
-  Logger.log('===============================================');
-  Logger.log('ติดตั้งเรียบร้อย ฐานข้อมูล: ' + ss.getUrl());
-  Logger.log('บัญชีผู้ดูแลระบบ  อีเมล: ' + email + '   รหัสผ่าน: ' + password);
-  Logger.log('กรุณาจดรหัสผ่านไว้ และเปลี่ยนรหัสหลังเข้าสู่ระบบครั้งแรก');
-  Logger.log('===============================================');
-}
-
-/** ลืมรหัส admin: แก้อีเมลด้านล่างแล้วกดเรียกใช้ จะสุ่มรหัสใหม่ให้ใน log */
-function resetAdminPassword() {
-  var email = 'admin@wms.local';
-  var user = DB.all('users').filter(function (u) { return u.email === email; })[0];
-  if (!user) throw new Error('ไม่พบบัญชี ' + email);
-  var password = randomPassword();
-  DB.update('users', user.id, { passwordHash: hashPassword(password), active: true });
-  Logger.log('รหัสผ่านใหม่ของ ' + email + ' คือ ' + password);
-}
