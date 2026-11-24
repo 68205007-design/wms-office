@@ -6,7 +6,7 @@ services:
     region: singapore
     plan: free
     rootDir: backend
-    buildCommand: npm install && npx prisma generate
+    buildCommand: npm install && npx prisma generate && mkdir -p fonts && (curl -fsSL -o fonts/NotoSansThai.ttf "https://github.com/google/fonts/raw/main/ofl/notosansthai/NotoSansThai%5Bwdth,wght%5D.ttf" || true)
     startCommand: export SHADOW_DATABASE_URL="${SHADOW_DATABASE_URL:-$DATABASE_URL}" && npx prisma migrate deploy && node prisma/seed.js && node server.js
     healthCheckPath: /api/health
     envVars:
@@ -18,6 +18,8 @@ services:
         value: https://68205007-design.github.io
       - key: SUPER_ADMIN_EMAIL
         value: admin@wms.local
+      - key: PDF_FONT_PATH
+        value: fonts/NotoSansThai.ttf # ฟอนต์ไทยสำหรับส่งออก PDF
       - key: JWT_SECRET
         generateValue: true
       - key: DATABASE_URL
