@@ -65,7 +65,10 @@ echo [4/6] ทดสอบ API ทั้งระบบ ^(smoke test^)...
 echo ---- smoke test ---->>"%LOG%"
 call node scripts\run-smoke.js >>"%LOG%" 2>&1
 if errorlevel 1 (echo [!] smoke test มีบางข้อไม่ผ่าน ดู scripts\setup.log & echo SMOKE_FAILED>>"%LOG%") else (echo [OK] smoke test ผ่านทั้งหมด & echo SMOKE_PASSED>>"%LOG%")
-call node prisma\seed.js >>"%LOG%" 2>&1
+call node prisma\seed.js --admin-only > "%TEMP%\wms-seed.txt" 2>&1
+type "%TEMP%\wms-seed.txt" >> "%LOG%"
+type "%TEMP%\wms-seed.txt"
+del "%TEMP%\wms-seed.txt"
 popd
 
 echo [5/6] ติดตั้ง dependencies ฝั่ง Frontend...
@@ -82,7 +85,8 @@ popd
 echo ==== SETUP_DONE>>"%LOG%"
 echo.
 echo ============================================
+findstr /c:"ADMIN_LOGIN" "%LOG%"
 echo  ติดตั้งเสร็จแล้ว! ดับเบิลคลิก start-dev.bat เพื่อเปิดระบบ
-echo  แล้วเข้า http://localhost:5173  (admin / Admin@1234)
+echo  แล้วเข้า http://localhost:5173  ล็อกอินด้วย admin และรหัสผ่านที่แสดงด้านบน (ADMIN_LOGIN)
 echo ============================================
 pause

@@ -122,6 +122,12 @@ async function main() {
     prisma.setting.deleteMany(),
   ]);
 
+  // --admin-only: เริ่มระบบใหม่แบบมีเฉพาะบัญชีผู้ดูแลระบบ (ใช้กับการติดตั้งใช้งานจริงในเครื่อง)
+  if (process.argv.includes('--admin-only')) {
+    await seedProduction();
+    return;
+  }
+
   console.log('• สร้างหน่วยงาน หมวดหมู่ หน่วยนับ...');
   const depts = {};
   for (const [code, name] of DEPARTMENTS) depts[code] = await prisma.department.create({ data: { code, name } });
