@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { api } from "../services/api.js";
-import { COLLEGE_LOGO, COLLEGE_NAME, SYSTEM_NAME } from "../branding.js";
+import { COLLEGE_LOGO, COLLEGE_NAME } from "../branding.js";
 
 const navigation = [
   { to: "/", label: "ภาพรวม", icon: LayoutDashboard },
@@ -108,8 +108,8 @@ export default function Shell() {
     <aside className={`fixed inset-y-0 left-0 z-40 flex flex-col bg-gradient-to-b from-[#7A231B] via-[#5E1814] to-[#3F0F0D] text-slate-200 shadow-xl shadow-slate-950/10 transition-all duration-200 lg:static lg:translate-x-0 ${collapsed ? "w-[84px]" : "w-[264px]"} ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
       <div aria-hidden="true" className="h-1 shrink-0 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
       <div className={`flex h-[82px] shrink-0 items-center border-b border-gold-300/20 ${collapsed ? "justify-center px-3" : "gap-3 px-5"}`}>
-        <img src={COLLEGE_LOGO} alt={"ตรา" + COLLEGE_NAME} className="h-14 w-14 shrink-0 rounded-full bg-white object-contain p-0.5 shadow-lg shadow-black/20 ring-2 ring-gold-400" />
-        {!collapsed && <div className="min-w-0"><p className="line-clamp-2 text-xs font-bold leading-5 text-white">{SYSTEM_NAME}</p><p className="mt-0.5 truncate text-[10px] font-medium text-gold-300">{COLLEGE_NAME}</p></div>}
+        <img src={COLLEGE_LOGO} alt={"ตรา" + COLLEGE_NAME} className="h-16 w-16 shrink-0 rounded-full bg-white object-contain p-0.5 shadow-lg shadow-black/20 ring-2 ring-gold-400" />
+        {!collapsed && <div className="min-w-0"><p className="text-sm font-bold leading-5 text-white">{COLLEGE_NAME}</p></div>}
         <button className="ml-auto rounded-lg p-2 text-slate-400 hover:bg-white/10 hover:text-white lg:hidden" onClick={() => setMobileOpen(false)} aria-label="ปิดเมนู"><X size={20} /></button>
       </div>
       {!collapsed && <div className="px-5 pb-2 pt-6 text-[10px] font-semibold uppercase tracking-[.18em] text-gold-300/70">เมนูหลัก</div>}
