@@ -9,7 +9,7 @@ import {
   Tooltip, XAxis, YAxis
 } from "recharts";
 import { api, getErrorMessage } from "../services/api.js";
-import { useAuth } from "../context/AuthContext.jsx";
+
 import Notice from "../components/Notice.jsx";
 
 const currency = new Intl.NumberFormat("th-TH", { style: "currency", currency: "THB", maximumFractionDigits: 0 });
@@ -42,7 +42,7 @@ function DashboardSkeleton() {
 }
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -74,8 +74,8 @@ export default function DashboardPage() {
       <div className="pointer-events-none absolute right-40 top-16 hidden h-24 w-24 rounded-full bg-blue-100/70 md:block" />
       <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <div className="flex items-center gap-2 text-sm font-medium text-blue-700"><span className="text-xl">👋</span> ยินดีต้อนรับกลับเข้าสู่ระบบ</div>
-          <h1 className="mt-1 text-2xl font-bold tracking-tight text-[#6B1A17] sm:text-[28px]">{user?.name || "ผู้ใช้งาน"}</h1>
+          
+          <h1 className="text-2xl font-bold tracking-tight text-[#6B1A17] sm:text-[28px]">ยินดีต้อนรับ</h1>
           <p className="mt-1 text-sm text-slate-500">ภาพรวมการเบิกจ่ายและสถานะคลังสินค้าของคุณ</p>
         </div>
         <div className="flex items-center gap-2 self-start rounded-xl border border-white/80 bg-white/80 px-3.5 py-2.5 text-xs font-medium text-slate-600 shadow-sm sm:self-auto">
@@ -167,7 +167,7 @@ export default function DashboardPage() {
               <td className="px-5 py-3.5"><div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-lg bg-blue-50 text-blue-700"><Package size={16} /></span><span><span className="block font-semibold text-slate-700">{item.product.name}</span><span className="mt-0.5 block text-[10px] text-slate-400">{item.product.sku}</span></span></div></td>
               <td className="px-5 py-3.5"><span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold ${item.type === "STOCK_IN" ? "bg-emerald-50 text-emerald-700" : "bg-blue-50 text-blue-700"}`}><span className={`h-1.5 w-1.5 rounded-full ${item.type === "STOCK_IN" ? "bg-emerald-500" : "bg-blue-500"}`} />{item.type === "STOCK_IN" ? "รับเข้าคลัง" : "เบิกออก"}</span></td>
               <td className="px-5 py-3.5 font-semibold text-slate-700">{item.type === "STOCK_IN" ? "+" : "-"}{number.format(item.quantity)}</td>
-              <td className="px-5 py-3.5 text-xs text-slate-600">{item.createdBy.name}</td>
+              <td className="px-5 py-3.5 text-xs text-slate-600">{item.createdBy.name === "System Administrator" ? "ผู้ดูแลสูงสุด" : item.createdBy.name}</td>
               <td className="px-5 py-3.5 text-xs text-slate-500">{new Date(item.movementDate).toLocaleDateString("th-TH", { day: "numeric", month: "short", year: "numeric" })}</td>
             </tr>)}
             {!data.recent.length && <tr><td colSpan="5" className="px-5 py-12 text-center"><div className="mx-auto grid h-11 w-11 place-items-center rounded-full bg-slate-50 text-slate-400"><Boxes size={20} /></div><p className="mt-3 text-sm font-medium text-slate-600">ยังไม่มีรายการเคลื่อนไหว</p><p className="mt-1 text-xs text-slate-400">เมื่อมีการรับเข้าหรือเบิกออก ระบบจะแสดงข้อมูลที่นี่</p></td></tr>}
