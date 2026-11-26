@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
-  ArrowDownToLine, ArrowRight, Boxes, ClipboardCheck, Eye, EyeOff,
-  KeyRound, LockKeyhole, Mail, PackageCheck, ShieldCheck
+  ArrowDownToLine, ArrowRight, Boxes, CalendarDays, ClipboardCheck,
+  Clock3, Eye, EyeOff, KeyRound, LockKeyhole, Mail, PackageCheck, ShieldCheck
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { getErrorMessage } from "../services/api.js";
@@ -9,65 +9,13 @@ import Notice from "../components/Notice.jsx";
 import { COLLEGE_LOGO, COLLEGE_NAME, SYSTEM_NAME } from "../branding.js";
 
 const SYSTEM_VERSION = "1.0.0";
+const WAREHOUSE_BACKGROUND = new URL(`${import.meta.env.BASE_URL}branding/warehouse-login-background.png`, document.baseURI).href;
 
 const workflows = [
-  { icon: ArrowDownToLine, title: "รับเข้า", description: "บันทึกวัสดุและตรวจสอบยอดคงเหลือ" },
-  { icon: ClipboardCheck, title: "เบิก–อนุมัติ", description: "ส่งคำขอและติดตามสถานะการอนุมัติ" },
-  { icon: PackageCheck, title: "จ่าย–รายงาน", description: "จ่ายวัสดุและตรวจสอบรายงานย้อนหลัง" }
+  { icon: ArrowDownToLine, title: "รับเข้า", description: "บันทึกการรับวัสดุจากผู้จำหน่าย" },
+  { icon: ClipboardCheck, title: "เบิก–อนุมัติ", description: "ขอเบิกตามแผนกและติดตามผลอนุมัติ" },
+  { icon: PackageCheck, title: "จ่าย–รายงาน", description: "ตัดสต็อกและตรวจสอบรายงานย้อนหลัง" }
 ];
-
-function WarehouseIllustration() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="absolute inset-0 h-full w-full"
-      focusable="false"
-      preserveAspectRatio="xMidYMid slice"
-      viewBox="0 0 900 760"
-    >
-      <defs>
-        <linearGradient id="warehouse-fade" x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0" stopColor="#0A2450" stopOpacity=".08" />
-          <stop offset=".42" stopColor="#0A2450" stopOpacity=".36" />
-          <stop offset="1" stopColor="#061A36" stopOpacity=".12" />
-        </linearGradient>
-        <linearGradient id="warehouse-box" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stopColor="#A9D7FF" stopOpacity=".58" />
-          <stop offset="1" stopColor="#4599E6" stopOpacity=".24" />
-        </linearGradient>
-        <pattern id="warehouse-dots" width="22" height="22" patternUnits="userSpaceOnUse">
-          <circle cx="2" cy="2" fill="#DBEEFF" fillOpacity=".22" r="1.2" />
-        </pattern>
-      </defs>
-      <rect fill="url(#warehouse-dots)" height="760" width="900" />
-      <g fill="none" stroke="#C9E6FF" strokeOpacity=".34">
-        <path d="M365 52v622M500 52v622M635 52v622M770 52v622" strokeWidth="9" />
-        <path d="M335 196h470M335 355h470M335 514h470M335 673h470" strokeWidth="12" />
-        <path d="M335 210h470M335 369h470M335 528h470M335 687h470" strokeOpacity=".16" strokeWidth="3" />
-      </g>
-      <g fill="url(#warehouse-box)" stroke="#D6ECFF" strokeOpacity=".58" strokeWidth="2">
-        <rect height="82" rx="4" width="90" x="389" y="106" />
-        <rect height="92" rx="4" width="112" x="522" y="96" />
-        <rect height="76" rx="4" width="92" x="672" y="120" />
-        <rect height="92" rx="4" width="104" x="373" y="259" />
-        <rect height="78" rx="4" width="88" x="523" y="277" />
-        <rect height="94" rx="4" width="108" x="671" y="257" />
-        <rect height="76" rx="4" width="86" x="394" y="420" />
-        <rect height="94" rx="4" width="110" x="526" y="402" />
-        <rect height="78" rx="4" width="92" x="676" y="419" />
-        <rect height="88" rx="4" width="112" x="379" y="573" />
-        <rect height="72" rx="4" width="88" x="535" y="590" />
-        <rect height="92" rx="4" width="108" x="678" y="570" />
-      </g>
-      <g fill="none" stroke="#E4F3FF" strokeOpacity=".48" strokeWidth="2">
-        <path d="M434 106v82M578 96v92M718 120v76M425 259v92M567 277v76M725 257v92M437 420v76M580 402v92M722 419v76M435 573v88M579 590v72M732 570v92" />
-        <path d="M396 129h75M531 124h92M377 285h96M528 298h78M676 285h98M398 444h77M531 428h98M682 445h80M385 599h98M541 615h74M685 596h94" strokeOpacity=".56" />
-      </g>
-      <path d="M270 708h590" fill="none" stroke="#C9E6FF" strokeOpacity=".32" strokeWidth="3" />
-      <rect fill="url(#warehouse-fade)" height="760" width="900" />
-    </svg>
-  );
-}
 
 export default function LoginPage() {
   const { signIn } = useAuth();
@@ -76,6 +24,14 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const now = new Date();
+  const dateLabel = now.toLocaleDateString("th-TH", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+  const timeLabel = now.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" });
 
   const submit = async (event) => {
     event.preventDefault();
@@ -94,8 +50,8 @@ export default function LoginPage() {
     <main className="min-h-screen bg-[#F0F5FB] text-[#122743]">
       <div className="min-h-screen lg:grid lg:min-h-screen lg:grid-cols-[1.08fr_.92fr] lg:grid-rows-[minmax(660px,1fr)_52px]">
         <section className="relative isolate flex min-h-[590px] flex-col overflow-hidden bg-[#08234D] px-6 py-7 text-white sm:px-10 sm:py-9 lg:row-start-1 lg:min-h-0 lg:px-12 lg:py-10 xl:px-16">
-          <WarehouseIllustration />
-          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-br from-[#071A38]/95 via-[#0A3470]/85 to-[#087BB5]/45" />
+          <img aria-hidden="true" src={WAREHOUSE_BACKGROUND} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
+          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-br from-[#071A38]/90 via-[#0A3470]/78 to-[#061A36]/58" />
           <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#061830]/75 to-transparent" />
           <div aria-hidden="true" className="absolute -left-36 top-28 h-80 w-80 rounded-full bg-sky-400/10 blur-3xl" />
 
@@ -122,17 +78,17 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <div className="relative z-10 grid gap-2.5 sm:grid-cols-3">
-            {workflows.map(({ icon: Icon, title, description }, index) => (
-              <div key={title} className="flex items-center gap-3 rounded-xl border border-white/15 bg-[#061A36]/35 px-3.5 py-3 backdrop-blur-sm sm:block sm:min-h-[120px] sm:p-4">
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-sky-300/25 to-blue-400/10 text-sky-100 ring-1 ring-white/15 sm:mb-3">
+          <div className="relative z-10 grid gap-3">
+            {workflows.map(({ icon: Icon, title, description }) => (
+              <div key={title} className="flex items-center gap-3">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/20 bg-white/10 text-sky-100 shadow-sm shadow-black/10">
                   <Icon size={20} strokeWidth={1.8} />
                 </span>
-                <span className="min-w-0">
-                  <span className="block text-sm font-bold text-white">{title}</span>
-                  <span className="mt-1 block text-xs leading-5 text-blue-100/75">{description}</span>
+                <span className="min-w-0 text-xs leading-5 text-blue-100/85">
+                  <span className="font-bold text-white">{title}</span>
+                  <span className="mx-1.5 text-blue-200/60">·</span>
+                  <span>{description}</span>
                 </span>
-                <span className="sr-only">ขั้นตอนที่ {index + 1}</span>
               </div>
             ))}
           </div>
@@ -145,18 +101,23 @@ export default function LoginPage() {
         <section className="relative flex min-h-[590px] items-center justify-center overflow-hidden bg-[linear-gradient(145deg,#F8FBFF_0%,#EDF4FC_100%)] px-5 py-12 sm:px-8 lg:row-start-1 lg:min-h-0 lg:px-10 xl:px-16">
           <div aria-hidden="true" className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-blue-200/20 blur-3xl" />
           <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 -left-24 h-80 w-80 rounded-full bg-sky-200/20 blur-3xl" />
+          <div className="absolute right-5 top-5 hidden items-center gap-2 rounded-full border border-blue-100 bg-white/80 px-3 py-1.5 text-[10px] font-medium text-slate-500 shadow-sm sm:flex xl:right-8">
+            <CalendarDays size={13} className="text-blue-600" />
+            <span>{dateLabel}</span>
+            <span className="text-slate-300">·</span>
+            <Clock3 size={12} className="text-blue-600" />
+            <span>{timeLabel}</span>
+          </div>
 
           <div className="relative w-full max-w-[440px]">
-            <div className="mb-5 flex items-center gap-2 text-xs font-semibold tracking-wide text-blue-700">
-              <span className="grid h-7 w-7 place-items-center rounded-lg bg-blue-100 text-blue-700">
-                <LockKeyhole size={14} />
-              </span>
-              <span>พื้นที่สำหรับผู้ใช้งาน</span>
-            </div>
             <div className="overflow-hidden rounded-[26px] border border-blue-100/80 bg-white shadow-[0_28px_80px_-36px_rgba(13,50,94,.32)]">
               <div aria-hidden="true" className="h-1.5 bg-gradient-to-r from-sky-400 via-blue-600 to-[#123B82]" />
               <div className="p-6 sm:p-9">
                 <div className="mb-7">
+                  <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-blue-700">
+                    <span className="h-2 w-2 rounded-full bg-sky-500 shadow-[0_0_0_4px_rgba(14,165,233,.12)]" />
+                    <span>ยินดีต้อนรับ</span>
+                  </div>
                   <h2 className="text-3xl font-bold tracking-tight text-[#112C50] sm:text-[34px]">เข้าสู่ระบบ</h2>
                   <p className="mt-2 text-sm leading-6 text-slate-500">
                     กรอกข้อมูลบัญชีเพื่อเข้าใช้งาน{SYSTEM_NAME}
