@@ -16,7 +16,7 @@ const RequisitionsPage = lazy(() => import("./pages/RequisitionsPage.jsx"));
 const ApprovalsPage = lazy(() => import("./pages/ApprovalsPage.jsx"));
 const StockIssuePage = lazy(() => import("./pages/StockIssuePage.jsx"));
 const NotificationsPage = lazy(() => import("./pages/NotificationsPage.jsx"));
-const UserGuidePage = lazy(() => import("./pages/UserGuidePage.jsx"));
+const UserGuidePage = lazy(() => import("./pages/UserGuide.jsx"));
 
 function Guard({ children, roles }) {
   const { user, loading } = useAuth();
