@@ -8,7 +8,7 @@ import Pagination from "../components/Pagination.jsx";
 
 const blank = { name: "", email: "", password: "", role: "USER", departmentId: "" };
 const pageSize = 10;
-const roleLabels = { SUPER_ADMIN: "Super Admin", ADMIN: "Admin", STAFF: "เจ้าหน้าที่คลัง (เดิม)", WAREHOUSE_STAFF: "เจ้าหน้าที่คลัง", USER: "User" };
+const roleLabels = { SUPER_ADMIN: "ผู้ดูแลสูงสุด", ADMIN: "ผู้ดูแลระบบ", STAFF: "เจ้าหน้าที่คลัง (เดิม)", WAREHOUSE_STAFF: "เจ้าหน้าที่คลัง", USER: "ผู้ขอเบิก" };
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
   const [departments, setDepartments] = useState([]);
@@ -52,7 +52,7 @@ export default function UsersPage() {
     } catch (e) { setError(getErrorMessage(e)); }
   };
   return <>
-    <PageHeader title="จัดการผู้ใช้งาน" description="กำหนดสิทธิ์ Admin, เจ้าหน้าที่คลัง และ User" action={<button onClick={() => { setEditing(null); setForm(blank); setError(""); setOpen(true); }} className="inline-flex items-center gap-2 rounded-lg bg-navy-950 px-4 py-2.5 text-sm font-semibold text-white"><Plus size={17} />เพิ่มผู้ใช้</button>} />
+    <PageHeader title="จัดการผู้ใช้งาน" description="กำหนดสิทธิ์ผู้ดูแลระบบ เจ้าหน้าที่คลัง และผู้ขอเบิก" action={<button onClick={() => { setEditing(null); setForm(blank); setError(""); setOpen(true); }} className="inline-flex items-center gap-2 rounded-lg bg-navy-950 px-4 py-2.5 text-sm font-semibold text-white"><Plus size={17} />เพิ่มผู้ใช้</button>} />
     <Notice message={message} type="success" /><Notice message={error} />
     <section className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
       <div className="border-b border-slate-100 p-4"><div className="relative max-w-sm"><Search size={17} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" /><input value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} placeholder="ค้นหาชื่อหรืออีเมล" className="w-full rounded-lg border border-slate-200 py-2.5 pl-10 pr-3 text-sm transition focus:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-50" /></div></div>
@@ -63,7 +63,7 @@ export default function UsersPage() {
       <label className="block text-sm font-medium text-slate-700">ชื่อ<input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5" /></label>
       <label className="block text-sm font-medium text-slate-700">อีเมล<input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5" /></label>
       {!editing && <label className="block text-sm font-medium text-slate-700">รหัสผ่านเริ่มต้น (อย่างน้อย 10 ตัว มีตัวใหญ่และตัวเลข)<input required type="password" minLength="10" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5" /></label>}
-      {editing?.role.name === "SUPER_ADMIN" ? <p className="text-sm text-slate-500">สิทธิ์: Super Admin (ไม่สามารถเปลี่ยนผ่านหน้าจอนี้)</p> : <label className="block text-sm font-medium text-slate-700">สิทธิ์<select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5"><option value="USER">User — ดูข้อมูลและส่งคำขอเบิก</option><option value="WAREHOUSE_STAFF">เจ้าหน้าที่คลัง — รับและจ่ายวัสดุ</option><option value="STAFF">เจ้าหน้าที่คลัง (บัญชีเดิม)</option><option value="ADMIN">Admin — จัดการระบบและอนุมัติคำขอ</option></select></label>}
+      {editing?.role.name === "SUPER_ADMIN" ? <p className="text-sm text-slate-500">สิทธิ์: ผู้ดูแลสูงสุด (ไม่สามารถเปลี่ยนผ่านหน้าจอนี้)</p> : <label className="block text-sm font-medium text-slate-700">สิทธิ์<select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5"><option value="USER">ผู้ขอเบิก — ดูข้อมูลและส่งคำขอเบิก</option><option value="WAREHOUSE_STAFF">เจ้าหน้าที่คลัง — รับและจ่ายวัสดุ</option><option value="STAFF">เจ้าหน้าที่คลัง (บัญชีเดิม)</option><option value="ADMIN">ผู้ดูแลระบบ — จัดการระบบและอนุมัติคำขอ</option></select></label>}
       <label className="block text-sm font-medium text-slate-700">แผนก{form.role === "USER" && <span className="ml-1 text-rose-500">*</span>}<select required={form.role === "USER"} value={form.departmentId} onChange={(e) => setForm({ ...form, departmentId: e.target.value })} className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5"><option value="">ไม่ระบุ</option>{departments.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}</select></label>
       <div className="flex justify-end gap-2"><button type="button" onClick={() => setOpen(false)} className="rounded-lg border border-slate-200 px-4 py-2.5 text-sm">ยกเลิก</button><button className="rounded-lg bg-navy-950 px-5 py-2.5 text-sm font-semibold text-white">{editing ? "บันทึก" : "สร้างบัญชี"}</button></div>
     </form></Modal>}
