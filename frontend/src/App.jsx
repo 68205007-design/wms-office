@@ -44,8 +44,8 @@ export default function App() {
       <Route path="users" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><UsersPage /></Guard>} />
       <Route path="audit-logs" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><AuditLogsPage /></Guard>} />
       <Route path="categories" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><MasterPage resource="categories" title="หมวดหมู่สินค้า" fields={["name"]} /></Guard>} />
-      <Route path="suppliers" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><MasterPage resource="suppliers" title="ผู้จำหน่าย" fields={["name", "contactPerson", "phone", "email"]} /></Guard>} />
-      <Route path="departments" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><MasterPage resource="departments" title="แผนก" fields={["name"]} /></Guard>} />
+
+
       <Route path="units" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><MasterPage resource="units" title="หน่วยนับ" fields={["name", "abbreviation"]} /></Guard>} />
       <Route path="settings" element={<SettingsPage />} />
     </Route>
