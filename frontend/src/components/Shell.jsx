@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Package, ArrowDownToLine, ArrowUpFromLine, ChartNoAxesCombined,
-  Users, Tags, Truck, Building2, Settings, LogOut, Menu, X, ChevronRight,
+  Users, Tags, Settings, LogOut, Menu, X, ChevronRight,
   ClipboardList, ClipboardCheck, ClipboardPlus, PanelLeftClose, PanelLeftOpen, Search,
   Bell, BellRing, UserRound, ChevronDown, CircleAlert, PackageCheck, BookOpen
 } from "lucide-react";
@@ -20,8 +20,8 @@ const navigation = [
   { to: "/notifications", label: "แจ้งเตือน", icon: BellRing },
   { to: "/reports", label: "รายงาน", icon: ChartNoAxesCombined },   { to: "/guide", label: "คู่มือการใช้งาน", icon: BookOpen },
   { to: "/categories", label: "หมวดหมู่", icon: Tags, roles: ["SUPER_ADMIN", "ADMIN"] },
-  { to: "/suppliers", label: "ผู้จำหน่าย", icon: Truck, roles: ["SUPER_ADMIN", "ADMIN"] },
-  { to: "/departments", label: "แผนก", icon: Building2, roles: ["SUPER_ADMIN", "ADMIN"] },
+
+
   { to: "/units", label: "หน่วยนับ", icon: Package, roles: ["SUPER_ADMIN", "ADMIN"] },
   { to: "/users", label: "ผู้ใช้งาน", icon: Users, roles: ["SUPER_ADMIN", "ADMIN"] },
   { to: "/audit-logs", label: "ประวัติระบบ", icon: ClipboardList, roles: ["SUPER_ADMIN", "ADMIN"] },
