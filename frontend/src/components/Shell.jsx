@@ -92,7 +92,7 @@ export default function Shell() {
     try { await signOut(); }
     finally { navigate("/login"); }
   };
-  const roleLabel = { SUPER_ADMIN: "ผู้ดูแลสูงสุด", ADMIN: "ผู้ดูแลระบบ", STAFF: "เจ้าหน้าที่คลัง", WAREHOUSE_STAFF: "เจ้าหน้าที่คลัง", USER: "ผู้ขอเบิก" }[user?.role];
+  const roleLabel = { SUPER_ADMIN: "ผู้ดูแลสูงสุด", ADMIN: "ผู้ดูแลระบบ", STAFF: "เจ้าหน้าที่คลัง", WAREHOUSE_STAFF: "เจ้าหน้าที่คลัง", USER: "ผู้ขอเบิก" }[user?.role]; const displayName = user?.name === "System Administrator" ? "ผู้ดูแลสูงสุด" : user?.name;
   const sectionName = navigation.find((item) => item.to === location.pathname)?.label || "คลังสินค้า";
 
   const submitSearch = (event) => {
@@ -127,8 +127,8 @@ export default function Shell() {
           {collapsed ? <PanelLeftOpen size={18} /> : <><PanelLeftClose size={18} /><span className="text-xs">ย่อเมนู</span></>}
         </button>
         <div className={`mt-2 flex items-center rounded-xl bg-white/[.06] ${collapsed ? "justify-center p-2" : "gap-3 p-2.5"}`}>
-          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gold-200 text-sm font-bold text-maroon-800">{user?.name?.slice(0, 1)?.toUpperCase()}</div>
-          {!collapsed && <div className="min-w-0 flex-1 text-left"><p className="truncate text-xs font-semibold text-white">{user?.name}</p><p className="mt-0.5 text-[10px] text-slate-400">{roleLabel}</p></div>}
+          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gold-200 text-sm font-bold text-maroon-800">{displayName?.slice(0, 1)?.toUpperCase()}</div>
+          {!collapsed && <div className="min-w-0 flex-1 text-left"><p className="truncate text-xs font-semibold text-white">{displayName}</p><p className="mt-0.5 text-[10px] text-slate-400">{roleLabel}</p></div>}
           {!collapsed && <button onClick={logout} className="rounded-lg p-2 text-slate-400 transition hover:bg-white/10 hover:text-white" title="ออกจากระบบ"><LogOut size={16} /></button>}
         </div>
       </div>
@@ -170,12 +170,12 @@ export default function Shell() {
           </div>
           <div className="relative">
             <button onClick={() => { setAccountOpen((value) => !value); setNotificationsOpen(false); }} className="flex items-center gap-2 rounded-xl p-1.5 transition hover:bg-slate-100" aria-label="เมนูบัญชีผู้ใช้" aria-expanded={accountOpen}>
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-gold-200 text-sm font-bold text-maroon-800">{user?.name?.slice(0, 1)?.toUpperCase()}</span>
-              <span className="hidden max-w-28 text-left xl:block"><span className="block truncate text-xs font-semibold text-slate-700">{user?.name}</span><span className="mt-0.5 block text-[10px] text-slate-400">{roleLabel}</span></span>
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-gold-200 text-sm font-bold text-maroon-800">{displayName?.slice(0, 1)?.toUpperCase()}</span>
+              <span className="hidden max-w-28 text-left xl:block"><span className="block truncate text-xs font-semibold text-slate-700">{displayName}</span><span className="mt-0.5 block text-[10px] text-slate-400">{roleLabel}</span></span>
               <ChevronDown size={15} className="hidden text-slate-400 xl:block" />
             </button>
             {accountOpen && <div className="absolute right-0 top-12 z-50 w-56 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl shadow-slate-900/10">
-              <div className="border-b border-slate-100 px-3 py-2.5"><p className="truncate text-xs font-semibold text-slate-800">{user?.name}</p><p className="mt-1 truncate text-[11px] text-slate-400">{user?.email}</p></div>
+              <div className="border-b border-slate-100 px-3 py-2.5"><p className="truncate text-xs font-semibold text-slate-800">{displayName}</p><p className="mt-1 truncate text-[11px] text-slate-400">{user?.email}</p></div>
               <Link to="/settings" onClick={() => setAccountOpen(false)} className="mt-1 flex items-center gap-2 rounded-lg px-3 py-2.5 text-xs text-slate-600 hover:bg-slate-50"><UserRound size={16} />ตั้งค่าบัญชี</Link>
               <button onClick={logout} className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-xs text-rose-600 hover:bg-rose-50"><LogOut size={16} />ออกจากระบบ</button>
             </div>}
