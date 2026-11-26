@@ -26,7 +26,7 @@ button { cursor: pointer; }
   background-size: 22px 22px, 64px 64px, 100% 100%, 100% 100%;
 }
 .brand-pattern + section {
-  background-color: #FFFCF5;
+  background-color: rgba(255,252,245,.58);
   background-image:
     radial-gradient(circle at 1px 1px,rgba(15,76,92,.055) 1px,transparent 1.2px),
     linear-gradient(rgba(15,76,92,.02) 1px,transparent 1px),
@@ -36,7 +36,7 @@ button { cursor: pointer; }
   background-size: 24px 24px, 64px 64px, 64px 64px, 100% 100%, 100% 100%;
 }
 aside.brand-pattern + main {
-  background-color: #FFFCF5;
+  background-color: rgba(255,252,245,.5);
   background-image:
     radial-gradient(circle at 1px 1px,rgba(15,76,92,.055) 1px,transparent 1.2px),
     linear-gradient(rgba(15,76,92,.018) 1px,transparent 1px),
@@ -51,6 +51,37 @@ aside.brand-pattern + main > header {
     radial-gradient(circle at 1px 1px,rgba(15,76,92,.045) 1px,transparent 1.2px),
     linear-gradient(90deg,rgba(116,190,177,.06),transparent 42%);
   background-size: 20px 20px, 100% 100%;
+}
+.site-background::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: .09;
+  pointer-events: none;
+  background-image: var(--site-background-image);
+  background-repeat: no-repeat;
+  background-position: right 4vw center;
+  background-size: min(56vw,600px) auto;
+  -webkit-mask-image: radial-gradient(ellipse,#000 42%,transparent 78%);
+  mask-image: radial-gradient(ellipse,#000 42%,transparent 78%);
+}
+.site-background--login::before {
+  opacity: .08;
+  background-position: 85% 100%;
+  background-size: min(50vw,500px) auto;
+}
+@media (max-width: 1023px) {
+  .site-background::before {
+    opacity: .06;
+    background-position: center;
+    background-size: min(76vw,440px) auto;
+  }
+  .site-background--login::before {
+    opacity: .05;
+    background-position: center 100%;
+    background-size: min(76vw,380px) auto;
+  }
 }
 [class~="text-[9px]"], [class~="text-[10px]"] { font-size: 0.75rem; }
 [class~="text-[11px]"] { font-size: 0.8125rem; }
