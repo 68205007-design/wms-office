@@ -107,8 +107,8 @@ export default function Shell() {
     {mobileOpen && <button aria-label="ปิดเมนู" className="fixed inset-0 z-30 bg-slate-950/40 backdrop-blur-[2px] lg:hidden" onClick={() => setMobileOpen(false)} />}
     <aside className={`fixed inset-y-0 left-0 z-40 flex flex-col bg-gradient-to-b from-[#7A231B] via-[#5E1814] to-[#3F0F0D] text-slate-200 shadow-xl shadow-slate-950/10 transition-all duration-200 lg:static lg:translate-x-0 ${collapsed ? "w-[84px]" : "w-[264px]"} ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
       <div aria-hidden="true" className="h-1 shrink-0 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
-      <div className={`flex h-[82px] shrink-0 items-center border-b border-gold-300/20 ${collapsed ? "justify-center px-3" : "gap-3 px-5"}`}>
-        <img src={COLLEGE_LOGO} alt={"ตรา" + COLLEGE_NAME} className="h-16 w-16 shrink-0 rounded-full bg-white object-contain p-0.5 shadow-lg shadow-black/20 ring-2 ring-gold-400" />
+      <div className={`flex h-[104px] shrink-0 items-center border-b border-gold-300/20 ${collapsed ? "justify-center px-3" : "gap-3 px-5"}`}>
+        <img src={COLLEGE_LOGO} alt={"ตรา" + COLLEGE_NAME} className="h-20 w-20 shrink-0 rounded-full bg-white object-contain p-0.5 shadow-lg shadow-black/20 ring-2 ring-gold-400" />
         {!collapsed && <div className="min-w-0"><p className="text-sm font-bold leading-5 text-white">{COLLEGE_NAME}</p></div>}
         <button className="ml-auto rounded-lg p-2 text-slate-400 hover:bg-white/10 hover:text-white lg:hidden" onClick={() => setMobileOpen(false)} aria-label="ปิดเมนู"><X size={20} /></button>
       </div>
@@ -117,7 +117,7 @@ export default function Shell() {
         {navigation.filter((item) => !item.roles || item.roles.includes(user?.role)).map(({ to, label, icon: Icon }) =>
           <NavLink key={to} to={to} end={to === "/"} onClick={() => setMobileOpen(false)} title={collapsed ? label : undefined}
             className={({ isActive }) => `group relative flex h-11 items-center rounded-xl text-[13px] transition-colors duration-150 ${collapsed ? "justify-center px-0" : "gap-3 px-3"} ${isActive ? "bg-gradient-to-r from-gold-100 to-white font-semibold text-maroon-800 shadow-md shadow-black/20 before:absolute before:inset-y-2 before:left-0 before:w-1 before:rounded-r before:bg-gold-500" : "text-gold-50/80 hover:bg-white/[.08] hover:text-white"}`}>
-            <Icon size={18} strokeWidth={1.9} /><span className={`${collapsed ? "hidden" : "flex-1"}`}>{label}</span>
+            <Icon size={to === "/guide" ? 24 : 18} strokeWidth={to === "/guide" ? 2.2 : 1.9} /><span className={`${collapsed ? "hidden" : "flex-1"}`}>{label}</span>
             {!collapsed && <ChevronRight size={15} className="opacity-0 transition group-[.active]:opacity-70" />}
           </NavLink>
         )}
