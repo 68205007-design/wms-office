@@ -22,7 +22,7 @@ authRouter.post("/login", loginLimiter, asyncHandler(async (req, res) => {
   const body = z.object({ email: z.string().email(), password: z.string().min(8) }).parse(req.body);
   const user = await prisma.user.findUnique({
     where: { email: body.email.toLowerCase() },
-    include: { role: true, department: true }
+    include: { role: true }
   });
   if (!user || !user.active || !(await bcrypt.compare(body.password, user.passwordHash))) {
     await writeAudit(req, { action: "LOGIN_FAILED", module: "AUTH", recordId: body.email });
@@ -33,7 +33,7 @@ authRouter.post("/login", loginLimiter, asyncHandler(async (req, res) => {
   const token = jwt.sign(principal, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || "8h" });
   return res.json({
     success: true,
-    data: { token, user: { ...principal, email: user.email, department: user.department } }
+    data: { token, user: { ...principal, email: user.email } }
   });
 }));
 
@@ -43,11 +43,11 @@ authRouter.post("/logout", authenticate, asyncHandler(async (req, res) => {
 }));
 
 authRouter.get("/me", authenticate, asyncHandler(async (req, res) => {
-  const user = await prisma.user.findUnique({ where: { id: req.user.id }, include: { role: true, department: true } });
+  const user = await prisma.user.findUnique({ where: { id: req.user.id }, include: { role: true } });
   if (!user) return res.status(404).json({ success: false, message: "ไม่พบผู้ใช้" });
   res.json({
     success: true,
-    data: { id: user.id, name: user.name, email: user.email, role: user.role.name, department: user.department }
+    data: { id: user.id, name: user.name, email: user.email, role: user.role.name }
   });
 }));
 
