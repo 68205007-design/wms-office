@@ -7,7 +7,7 @@
 - เข้าสู่ระบบด้วย JWT, bcrypt, ตรวจสิทธิ์ตาม role จากฐานข้อมูลทุก API request และเปลี่ยนรหัสผ่าน
 - บทบาท Super Admin, Admin, เจ้าหน้าที่คลัง (รองรับ Staff เดิม) และ User พร้อมตรวจสิทธิ์ฝั่ง API
 - Dashboard ยอดสินค้า/มูลค่าสต็อก/คำขอเบิกรายเดือน/รายการเคลื่อนไหวและกราฟจาก MySQL
-- CRUD สินค้า, หมวดหมู่, หน่วยนับ, ผู้จำหน่าย, แผนก และบัญชีผู้ใช้
+- CRUD สินค้า, หมวดหมู่, หน่วยนับ และบัญชีผู้ใช้
 - Workflow ขอเบิก → อนุมัติ/ปฏิเสธ → จ่ายวัสดุ พร้อมแจ้งเตือนและบันทึก Audit Log
 - รับเข้า/จ่ายออกใน Prisma transaction, ป้องกันยอดติดลบและการจ่ายซ้ำ
 - รายงานสินค้าคงเหลือ/ใกล้หมด/หมด/ความเคลื่อนไหว พร้อมส่งออก Excel, CSV และ PDF
@@ -179,7 +179,7 @@ npm.cmd test
 
 - `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`, `PUT /api/auth/change-password`
 - `GET/POST/PUT/DELETE /api/products` และ `POST /api/uploads/product-image`
-- `GET/POST/PUT/DELETE /api/categories`, `/api/suppliers`, `/api/departments`
+- `GET/POST/PUT/DELETE /api/categories`
 - `GET/POST/PUT/DELETE /api/units`
 - `POST /api/movements/in`, `GET /api/movements`; การจ่ายออกโดยตรงถูกปิดเพื่อบังคับ workflow ที่อนุมัติแล้ว
 - `GET/POST /api/requisitions`, `PATCH /api/requisitions/:id/decision`, `POST /api/requisitions/:id/fulfill`
