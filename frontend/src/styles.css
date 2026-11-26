@@ -6,7 +6,59 @@
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; min-height: 100vh; }
 button, input, select, textarea { font: inherit; }
-button { cursor: pointer; } .brand-pattern { background-color: #0F4C5C; background-image: radial-gradient(circle at 1px 1px, rgba(220,244,240,.14) 1px, transparent 1.2px), linear-gradient(145deg,#103F51 0%,#0F5963 55%,#123C4B 100%); background-size: 20px 20px,100% 100%; } .welcome-pattern { background-color: #F4FAF6; background-image: radial-gradient(circle at 1px 1px,rgba(15,76,92,.1) 1px,transparent 1.2px),linear-gradient(125deg,#E4F3EF 0%,#FFFCF5 68%); background-size: 22px 22px,100% 100%; } [class~="text-[9px]"], [class~="text-[10px]"] { font-size: 0.75rem; } [class~="text-[11px]"] { font-size: 0.8125rem; } [class~="text-[12px]"] { font-size: 0.875rem; } [class~="text-[13px]"] { font-size: 0.9375rem; } [class~="text-[15px]"] { font-size: 1.0625rem; } [class~="text-[27px]"] { font-size: 1.875rem; } [class~="text-[28px]"] { font-size: 2rem; }
+button { cursor: pointer; }
+.brand-pattern {
+  background-color: #0F4C5C;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(220,244,240,.15) 1px, transparent 1.2px),
+    repeating-linear-gradient(135deg, transparent 0 23px, rgba(220,244,240,.035) 24px 25px),
+    radial-gradient(ellipse at 82% 18%, rgba(86,193,186,.15), transparent 42%),
+    linear-gradient(145deg,#103F51 0%,#0F5963 55%,#123C4B 100%);
+  background-size: 20px 20px, 52px 52px, 100% 100%, 100% 100%;
+}
+.welcome-pattern {
+  background-color: #F4FAF6;
+  background-image:
+    radial-gradient(circle at 1px 1px,rgba(15,76,92,.1) 1px,transparent 1.2px),
+    repeating-linear-gradient(135deg,transparent 0 27px,rgba(15,76,92,.025) 28px 29px),
+    radial-gradient(ellipse at 92% 10%,rgba(103,180,169,.15),transparent 38%),
+    linear-gradient(125deg,#E4F3EF 0%,#FFFCF5 68%);
+  background-size: 22px 22px, 64px 64px, 100% 100%, 100% 100%;
+}
+.brand-pattern + section {
+  background-color: #FFFCF5;
+  background-image:
+    radial-gradient(circle at 1px 1px,rgba(15,76,92,.055) 1px,transparent 1.2px),
+    linear-gradient(rgba(15,76,92,.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(15,76,92,.02) 1px,transparent 1px),
+    radial-gradient(ellipse at 95% 5%,rgba(116,190,177,.14),transparent 39%),
+    radial-gradient(ellipse at 5% 100%,rgba(231,190,109,.09),transparent 35%);
+  background-size: 24px 24px, 64px 64px, 64px 64px, 100% 100%, 100% 100%;
+}
+aside.brand-pattern + main {
+  background-color: #FFFCF5;
+  background-image:
+    radial-gradient(circle at 1px 1px,rgba(15,76,92,.055) 1px,transparent 1.2px),
+    linear-gradient(rgba(15,76,92,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(15,76,92,.018) 1px,transparent 1px),
+    radial-gradient(ellipse at 100% 0%,rgba(116,190,177,.12),transparent 34%),
+    radial-gradient(ellipse at 0% 100%,rgba(231,190,109,.08),transparent 30%);
+  background-size: 28px 28px, 56px 56px, 56px 56px, 100% 100%, 100% 100%;
+}
+aside.brand-pattern + main > header {
+  background-color: rgba(255,255,255,.96);
+  background-image:
+    radial-gradient(circle at 1px 1px,rgba(15,76,92,.045) 1px,transparent 1.2px),
+    linear-gradient(90deg,rgba(116,190,177,.06),transparent 42%);
+  background-size: 20px 20px, 100% 100%;
+}
+[class~="text-[9px]"], [class~="text-[10px]"] { font-size: 0.75rem; }
+[class~="text-[11px]"] { font-size: 0.8125rem; }
+[class~="text-[12px]"] { font-size: 0.875rem; }
+[class~="text-[13px]"] { font-size: 0.9375rem; }
+[class~="text-[15px]"] { font-size: 1.0625rem; }
+[class~="text-[27px]"] { font-size: 1.875rem; }
+[class~="text-[28px]"] { font-size: 2rem; }
 .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
 .scrollbar-thin::-webkit-scrollbar-thumb { background: #D2C8BA; border-radius: 6px; }
 .surface-card { @apply rounded-2xl border border-gold-100 bg-white shadow-[0_1px_2px_rgba(15,76,92,.05),0_8px_24px_-18px_rgba(15,76,92,.25)]; }
