@@ -36,7 +36,7 @@ button { cursor: pointer; }
   background-size: 24px 24px, 64px 64px, 64px 64px, 100% 100%, 100% 100%;
 }
 aside.brand-pattern + main {
-  background-color: rgba(255,252,245,.5);
+  background-color: rgba(240,245,251,.72);
   background-image:
     radial-gradient(circle at 1px 1px,rgba(18,59,130,.05) 1px,transparent 1.2px),
     linear-gradient(rgba(18,59,130,.018) 1px,transparent 1px),
