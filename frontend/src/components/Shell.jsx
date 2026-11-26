@@ -103,9 +103,9 @@ export default function Shell() {
     setSearch("");
   };
 
-  return <div className="min-h-screen bg-[#F7F2EA] lg:flex">
+  return <div className="min-h-screen bg-[#FFFCF5] lg:flex">
     {mobileOpen && <button aria-label="ปิดเมนู" className="fixed inset-0 z-30 bg-slate-950/40 backdrop-blur-[2px] lg:hidden" onClick={() => setMobileOpen(false)} />}
-    <aside className={`fixed inset-y-0 left-0 z-40 flex flex-col bg-gradient-to-b from-[#7A231B] via-[#5E1814] to-[#3F0F0D] text-slate-200 shadow-xl shadow-slate-950/10 transition-all duration-200 lg:static lg:translate-x-0 ${collapsed ? "w-[84px]" : "w-[264px]"} ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
+    <aside className={`fixed inset-y-0 left-0 z-40 flex flex-col brand-pattern text-slate-200 shadow-xl shadow-slate-950/10 transition-all duration-200 lg:static lg:translate-x-0 ${collapsed ? "w-[84px]" : "w-[264px]"} ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
       <div aria-hidden="true" className="h-1 shrink-0 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
       <div className={`flex h-[104px] shrink-0 items-center border-b border-gold-300/20 ${collapsed ? "justify-center px-3" : "gap-3 px-5"}`}>
         <img src={COLLEGE_LOGO} alt={"ตรา" + COLLEGE_NAME} className="h-20 w-20 shrink-0 rounded-full bg-white object-contain p-0.5 shadow-lg shadow-black/20 ring-2 ring-gold-400" />
@@ -137,7 +137,7 @@ export default function Shell() {
       <header className="sticky top-0 z-20 flex min-h-[76px] items-center justify-between gap-4 border-b border-gold-200/70 bg-[#FFFDF9]/95 px-4 backdrop-blur-xl shadow-[0_1px_0_0_rgba(200,150,62,.25)] md:px-7">
         <div className="flex min-w-0 items-center gap-3">
           <button onClick={() => setMobileOpen(true)} className="rounded-xl p-2 text-slate-600 transition hover:bg-slate-100 lg:hidden" aria-label="เปิดเมนู"><Menu size={21} /></button>
-          <div className="min-w-0"><p className="truncate text-[15px] font-semibold text-[#6B1A17]">{sectionName}</p></div>
+          <div className="min-w-0"><p className="truncate text-[15px] font-semibold text-[#0F4C5C]">{sectionName}</p></div>
         </div>
         <form onSubmit={submitSearch} className="hidden w-full max-w-[390px] lg:block">
           <div className="group flex h-10 items-center rounded-xl border border-slate-200 bg-[#FAF7F2] px-3 transition focus-within:border-blue-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-blue-50">
