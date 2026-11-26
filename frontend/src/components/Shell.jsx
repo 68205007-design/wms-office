@@ -4,11 +4,11 @@ import {
   LayoutDashboard, Package, ArrowDownToLine, ArrowUpFromLine, ChartNoAxesCombined,
   Users, Tags, Truck, Building2, Settings, LogOut, Menu, X, ChevronRight,
   ClipboardList, ClipboardCheck, ClipboardPlus, PanelLeftClose, PanelLeftOpen, Search,
-  Bell, BellRing, UserRound, ChevronDown, CircleAlert, PackageCheck
+  Bell, BellRing, UserRound, ChevronDown, CircleAlert, PackageCheck, BookOpen
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { api } from "../services/api.js";
-import { COLLEGE_NAME, SYSTEM_LOGO, SYSTEM_NAME } from "../branding.js";
+import { COLLEGE_LOGO, COLLEGE_NAME, SYSTEM_NAME } from "../branding.js";
 
 const navigation = [
   { to: "/", label: "ภาพรวม", icon: LayoutDashboard },
@@ -18,7 +18,7 @@ const navigation = [
   { to: "/stock-issue", label: "จ่ายวัสดุ", icon: PackageCheck, roles: ["SUPER_ADMIN", "ADMIN", "STAFF", "WAREHOUSE_STAFF"] },
   { to: "/stock-in", label: "รับเข้าวัสดุ", icon: ArrowDownToLine, roles: ["SUPER_ADMIN", "ADMIN", "STAFF", "WAREHOUSE_STAFF"] },
   { to: "/notifications", label: "แจ้งเตือน", icon: BellRing },
-  { to: "/reports", label: "รายงาน", icon: ChartNoAxesCombined },
+  { to: "/reports", label: "รายงาน", icon: ChartNoAxesCombined },   { to: "/guide", label: "คู่มือการใช้งาน", icon: BookOpen },
   { to: "/categories", label: "หมวดหมู่", icon: Tags, roles: ["SUPER_ADMIN", "ADMIN"] },
   { to: "/suppliers", label: "ผู้จำหน่าย", icon: Truck, roles: ["SUPER_ADMIN", "ADMIN"] },
   { to: "/departments", label: "แผนก", icon: Building2, roles: ["SUPER_ADMIN", "ADMIN"] },
@@ -92,7 +92,7 @@ export default function Shell() {
     try { await signOut(); }
     finally { navigate("/login"); }
   };
-  const roleLabel = { SUPER_ADMIN: "Super Admin", ADMIN: "Admin", STAFF: "เจ้าหน้าที่คลัง", WAREHOUSE_STAFF: "เจ้าหน้าที่คลัง", USER: "User" }[user?.role];
+  const roleLabel = { SUPER_ADMIN: "ผู้ดูแลสูงสุด", ADMIN: "ผู้ดูแลระบบ", STAFF: "เจ้าหน้าที่คลัง", WAREHOUSE_STAFF: "เจ้าหน้าที่คลัง", USER: "ผู้ขอเบิก" }[user?.role];
   const sectionName = navigation.find((item) => item.to === location.pathname)?.label || "คลังสินค้า";
 
   const submitSearch = (event) => {
@@ -108,8 +108,8 @@ export default function Shell() {
     <aside className={`fixed inset-y-0 left-0 z-40 flex flex-col bg-gradient-to-b from-[#7A231B] via-[#5E1814] to-[#3F0F0D] text-slate-200 shadow-xl shadow-slate-950/10 transition-all duration-200 lg:static lg:translate-x-0 ${collapsed ? "w-[84px]" : "w-[264px]"} ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
       <div aria-hidden="true" className="h-1 shrink-0 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
       <div className={`flex h-[82px] shrink-0 items-center border-b border-gold-300/20 ${collapsed ? "justify-center px-3" : "gap-3 px-5"}`}>
-        <img src={SYSTEM_LOGO} alt="" className="h-11 w-11 shrink-0 rounded-full bg-white object-cover shadow-lg shadow-black/20 ring-2 ring-gold-400" />
-        {!collapsed && <div className="min-w-0"><p className="line-clamp-2 text-[10px] font-bold leading-4 text-white">{SYSTEM_NAME}</p><p className="mt-0.5 truncate text-[9px] font-medium text-gold-300">{COLLEGE_NAME}</p></div>}
+        <img src={COLLEGE_LOGO} alt={"ตรา" + COLLEGE_NAME} className="h-14 w-14 shrink-0 rounded-full bg-white object-contain p-0.5 shadow-lg shadow-black/20 ring-2 ring-gold-400" />
+        {!collapsed && <div className="min-w-0"><p className="line-clamp-2 text-xs font-bold leading-5 text-white">{SYSTEM_NAME}</p><p className="mt-0.5 truncate text-[10px] font-medium text-gold-300">{COLLEGE_NAME}</p></div>}
         <button className="ml-auto rounded-lg p-2 text-slate-400 hover:bg-white/10 hover:text-white lg:hidden" onClick={() => setMobileOpen(false)} aria-label="ปิดเมนู"><X size={20} /></button>
       </div>
       {!collapsed && <div className="px-5 pb-2 pt-6 text-[10px] font-semibold uppercase tracking-[.18em] text-gold-300/70">เมนูหลัก</div>}
@@ -137,12 +137,12 @@ export default function Shell() {
       <header className="sticky top-0 z-20 flex min-h-[76px] items-center justify-between gap-4 border-b border-gold-200/70 bg-[#FFFDF9]/95 px-4 backdrop-blur-xl shadow-[0_1px_0_0_rgba(200,150,62,.25)] md:px-7">
         <div className="flex min-w-0 items-center gap-3">
           <button onClick={() => setMobileOpen(true)} className="rounded-xl p-2 text-slate-600 transition hover:bg-slate-100 lg:hidden" aria-label="เปิดเมนู"><Menu size={21} /></button>
-          <div className="min-w-0"><p className="hidden max-w-[48vw] truncate text-[11px] text-slate-400 sm:block">{SYSTEM_NAME}</p><p className="truncate text-[15px] font-semibold text-[#6B1A17]">{sectionName}</p></div>
+          <div className="min-w-0"><p className="truncate text-[15px] font-semibold text-[#6B1A17]">{sectionName}</p></div>
         </div>
         <form onSubmit={submitSearch} className="hidden w-full max-w-[390px] lg:block">
           <div className="group flex h-10 items-center rounded-xl border border-slate-200 bg-[#FAF7F2] px-3 transition focus-within:border-blue-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-blue-50">
             <Search size={17} className="shrink-0 text-slate-400 group-focus-within:text-blue-600" />
-            <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="ค้นหาสินค้า, SKU หรือ Barcode" className="h-full w-full border-0 bg-transparent px-2.5 text-xs outline-none placeholder:text-slate-400" aria-label="ค้นหาสินค้า" />
+            <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="ค้นหาสินค้า หรือ SKU" className="h-full w-full border-0 bg-transparent px-2.5 text-xs outline-none placeholder:text-slate-400" aria-label="ค้นหาสินค้า" />
             <kbd className="hidden rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] text-slate-400 xl:inline">Enter</kbd>
           </div>
         </form>
