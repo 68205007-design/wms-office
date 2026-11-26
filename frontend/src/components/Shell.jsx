@@ -109,7 +109,7 @@ export default function Shell() {
       <div aria-hidden="true" className="h-1 shrink-0 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
       <div className={`flex h-[104px] shrink-0 items-center border-b border-gold-300/20 ${collapsed ? "justify-center px-3" : "gap-3 px-5"}`}>
         <img src={COLLEGE_LOGO} alt={"ตรา" + COLLEGE_NAME} className="h-20 w-20 shrink-0 rounded-full bg-white object-contain p-0.5 shadow-lg shadow-black/20 ring-2 ring-gold-400" />
-        {!collapsed && <div className="min-w-0"><p className="text-base font-bold leading-6 text-white">{SYSTEM_NAME}</p><p className="mt-0.5 text-sm font-medium text-sky-200">{COLLEGE_NAME}</p></div>}
+        {!collapsed && <div className="min-w-0"><p className="text-sm font-bold leading-6 text-white">{SYSTEM_NAME}</p><p className="mt-0.5 text-xs font-medium text-sky-200">{COLLEGE_NAME}</p></div>}
         <button className="ml-auto rounded-lg p-2 text-slate-400 hover:bg-white/10 hover:text-white lg:hidden" onClick={() => setMobileOpen(false)} aria-label="ปิดเมนู"><X size={20} /></button>
       </div>
       {!collapsed && <div className="px-5 pb-2 pt-6 text-[10px] font-semibold uppercase tracking-[.18em] text-gold-300/70">เมนูหลัก</div>}
