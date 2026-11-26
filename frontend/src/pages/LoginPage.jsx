@@ -50,7 +50,7 @@ export default function LoginPage() {
 
       <div className="relative flex items-center gap-3">
         
-        <img src={COLLEGE_LOGO} alt={COLLEGE_NAME} className="h-20 w-20 shrink-0 rounded-full border border-white/60 bg-white object-contain p-0.5 shadow-lg shadow-black/10" />
+        <img src={COLLEGE_LOGO} alt={COLLEGE_NAME} className="h-24 w-24 shrink-0 rounded-full border border-white/60 bg-white object-contain p-0.5 shadow-lg shadow-black/10" />
         <div>
           
           <p className="text-2xl font-bold text-white">{COLLEGE_NAME}</p>
@@ -99,7 +99,7 @@ export default function LoginPage() {
       <div className="relative w-full max-w-[430px]">
         <div className="mb-10 flex min-w-0 items-center gap-2 lg:hidden">
           
-          <img src={COLLEGE_LOGO} alt={COLLEGE_NAME} className="h-20 w-20 shrink-0 rounded-full bg-white object-contain p-0.5 ring-1 ring-slate-200" />
+          <img src={COLLEGE_LOGO} alt={COLLEGE_NAME} className="h-24 w-24 shrink-0 rounded-full bg-white object-contain p-0.5 ring-1 ring-slate-200" />
           <div className="min-w-0"><p className="mt-0.5 text-base font-semibold text-blue-700">{COLLEGE_NAME}</p></div>
         </div>
 
