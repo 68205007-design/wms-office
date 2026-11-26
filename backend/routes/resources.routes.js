@@ -112,8 +112,8 @@ function registerSimpleResource(pathName, model, schema, fields, roles = admins)
   }));
 }
 
-registerSimpleResource("suppliers", "supplier", supplierSchema, ["name", "contactPerson", "email"]);
-registerSimpleResource("departments", "department", departmentSchema, ["name"]);
+
+
 registerSimpleResource("units", "unit", unitSchema, ["name", "abbreviation"]);
 
 const productSchema = z.object({
@@ -228,7 +228,7 @@ const userSchema = z.object({
   email: z.string().email().transform((value) => value.toLowerCase()),
   password: z.string().min(10).regex(/[A-Z]/).regex(/[0-9]/),
   role: z.enum(["ADMIN", "STAFF", "WAREHOUSE_STAFF", "USER"]),
-  departmentId: z.coerce.number().int().positive().optional().nullable(),
+
   active: z.boolean().optional()
 }).superRefine((data, context) => {
   if (data.role === "USER" && !data.departmentId) {
@@ -239,7 +239,7 @@ resourcesRouter.get("/users", admins, asyncHandler(async (req, res) => {
   const { skip, take } = pageParams(req.query);
   const where = searchWhere(req.query, ["name", "email"]);
   const [data, total] = await Promise.all([
-    prisma.user.findMany({ where, skip, take, select: { id: true, name: true, email: true, active: true, createdAt: true, role: true, department: true }, orderBy: { createdAt: "desc" } }),
+    prisma.user.findMany({ where, skip, take, select: { id: true, name: true, email: true, active: true, createdAt: true, role: true }, orderBy: { createdAt: "desc" } }),
     prisma.user.count({ where })
   ]);
   res.json({ success: true, data, pagination: { total } });
@@ -278,7 +278,7 @@ resourcesRouter.put("/users/:id", admins, asyncHandler(async (req, res) => {
     name: z.string().trim().min(1).max(120).optional(),
     email: z.string().email().transform((value) => value.toLowerCase()).optional(),
     role: z.enum(["ADMIN", "STAFF", "WAREHOUSE_STAFF", "USER"]).optional(),
-    departmentId: z.coerce.number().int().positive().nullable().optional()
+
   }).refine((value) => Object.keys(value).length > 0).parse(req.body);
   if (id === req.user.id && data.role) return res.status(400).json({ success: false, message: "ไม่สามารถเปลี่ยนสิทธิ์บัญชีตัวเองได้" });
   const target = await prisma.user.findUniqueOrThrow({ where: { id }, include: { role: true } });
@@ -290,14 +290,14 @@ resourcesRouter.put("/users/:id", admins, asyncHandler(async (req, res) => {
   }
   const previous = await prisma.user.findUniqueOrThrow({
     where: { id },
-    select: { id: true, name: true, email: true, active: true, role: true, departmentId: true, createdAt: true }
+    select: { id: true, name: true, email: true, active: true, role: true, createdAt: true }
   });
-  const updateData = { name: data.name, email: data.email, departmentId: data.departmentId };
+  const updateData = { name: data.name, email: data.email };
   if (data.role) updateData.role = { connect: { name: data.role } };
   const result = await prisma.user.update({
     where: { id },
     data: updateData,
-    select: { id: true, name: true, email: true, active: true, role: true, department: true }
+    select: { id: true, name: true, email: true, active: true, role: true }
   });
   await writeAudit(req, { action: "UPDATE", module: "USER", recordId: id, previousValue: previous, updatedValue: result });
   res.json({ success: true, data: result });
@@ -309,8 +309,8 @@ const movementSchema = z.object({
   unitCost: z.coerce.number().min(0).optional().nullable(),
   movementDate: z.coerce.date().default(() => new Date()),
   documentNumber: z.string().max(100).optional().nullable(),
-  supplierId: z.coerce.number().int().positive().optional().nullable(),
-  departmentId: z.coerce.number().int().positive().optional().nullable(),
+
+
   requesterName: z.string().max(120).optional().nullable(),
   purpose: z.string().max(500).optional().nullable(),
   notes: z.string().max(2000).optional().nullable(),
@@ -325,7 +325,7 @@ resourcesRouter.get("/movements", asyncHandler(async (req, res) => {
     ...(req.user.role === "STAFF" ? { createdById: req.user.id } : {})
   };
   const [data, total] = await Promise.all([
-    prisma.stockMovement.findMany({ where, skip, take, orderBy: { movementDate: "desc" }, include: { product: true, supplier: true, department: true, createdBy: { select: { id: true, name: true } } } }),
+    prisma.stockMovement.findMany({ where, skip, take, orderBy: { movementDate: "desc" }, include: { product: true, createdBy: { select: { id: true, name: true } } } }),
     prisma.stockMovement.count({ where })
   ]);
   res.json({ success: true, data, pagination: { total, page: Math.floor(skip / take) + 1, limit: take } });
@@ -336,7 +336,7 @@ resourcesRouter.post("/movements/:type", warehouseOperators, asyncHandler(async 
     return res.status(409).json({ success: false, message: "การจ่ายวัสดุต้องดำเนินการจากคำขอเบิกที่ได้รับอนุมัติแล้ว" });
   }
   const body = movementSchema.parse(req.body);
-  if (type === "STOCK_IN" && !body.supplierId) return res.status(400).json({ success: false, message: "กรุณาระบุผู้จำหน่าย" });
+
   if (type === "STOCK_OUT" && (!body.requesterName || !body.purpose || !body.departmentId)) {
     return res.status(400).json({ success: false, message: "กรุณาระบุผู้เบิก แผนก และวัตถุประสงค์" });
   }
