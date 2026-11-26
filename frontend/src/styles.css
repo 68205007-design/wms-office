@@ -2,15 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { font-family: "Sarabun", "Leelawadee UI", Tahoma, sans-serif; color: #2B211C; background: #F7F2EA; font-synthesis: none; }
+:root { font-family: "Sarabun", "Leelawadee UI", Tahoma, sans-serif; color: #1A3442; background: #FFFCF5; font-synthesis: none; }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; min-height: 100vh; }
 button, input, select, textarea { font: inherit; }
-button { cursor: pointer; } [class~="text-[9px]"], [class~="text-[10px]"] { font-size: 0.75rem; } [class~="text-[11px]"] { font-size: 0.8125rem; } [class~="text-[12px]"] { font-size: 0.875rem; } [class~="text-[13px]"] { font-size: 0.9375rem; } [class~="text-[15px]"] { font-size: 1.0625rem; } [class~="text-[27px]"] { font-size: 1.875rem; } [class~="text-[28px]"] { font-size: 2rem; }
+button { cursor: pointer; } .brand-pattern { background-color: #0F4C5C; background-image: radial-gradient(circle at 1px 1px, rgba(220,244,240,.14) 1px, transparent 1.2px), linear-gradient(145deg,#103F51 0%,#0F5963 55%,#123C4B 100%); background-size: 20px 20px,100% 100%; } .welcome-pattern { background-color: #F4FAF6; background-image: radial-gradient(circle at 1px 1px,rgba(15,76,92,.1) 1px,transparent 1.2px),linear-gradient(125deg,#E4F3EF 0%,#FFFCF5 68%); background-size: 22px 22px,100% 100%; } [class~="text-[9px]"], [class~="text-[10px]"] { font-size: 0.75rem; } [class~="text-[11px]"] { font-size: 0.8125rem; } [class~="text-[12px]"] { font-size: 0.875rem; } [class~="text-[13px]"] { font-size: 0.9375rem; } [class~="text-[15px]"] { font-size: 1.0625rem; } [class~="text-[27px]"] { font-size: 1.875rem; } [class~="text-[28px]"] { font-size: 2rem; }
 .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
 .scrollbar-thin::-webkit-scrollbar-thumb { background: #D2C8BA; border-radius: 6px; }
 .surface-card { @apply rounded-2xl border border-gold-100 bg-white shadow-[0_1px_2px_rgba(74,19,17,.05),0_8px_24px_-18px_rgba(74,19,17,.25)]; }
-::selection { background: #EFD9A3; color: #4E1612; }
+::selection { background: #B5E4DE; color: #0B2936; }
 .page-enter { animation: page-enter .24s ease-out both; }
 .toast-enter { animation: toast-enter .2s ease-out both; }
 @keyframes page-enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
