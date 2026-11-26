@@ -12,8 +12,8 @@ const SYSTEM_VERSION = "1.0.0";
 const WAREHOUSE_BACKGROUND = new URL(`${import.meta.env.BASE_URL}branding/warehouse-login-background.png`, document.baseURI).href;
 
 const workflows = [
-  { icon: ArrowDownToLine, title: "รับเข้า", description: "บันทึกการรับวัสดุจากผู้จำหน่าย" },
-  { icon: ClipboardCheck, title: "เบิก–อนุมัติ", description: "ขอเบิกตามแผนกและติดตามผลอนุมัติ" },
+  { icon: ArrowDownToLine, title: "รับเข้า", description: "บันทึกการรับวัสดุและเพิ่มยอดคงเหลือ" },
+  { icon: ClipboardCheck, title: "เบิก–อนุมัติ", description: "ส่งคำขอเบิกและติดตามผลอนุมัติ" },
   { icon: PackageCheck, title: "จ่าย–รายงาน", description: "ตัดสต็อกและตรวจสอบรายงานย้อนหลัง" }
 ];
 
