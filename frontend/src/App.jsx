@@ -16,6 +16,7 @@ const RequisitionsPage = lazy(() => import("./pages/RequisitionsPage.jsx"));
 const ApprovalsPage = lazy(() => import("./pages/ApprovalsPage.jsx"));
 const StockIssuePage = lazy(() => import("./pages/StockIssuePage.jsx"));
 const NotificationsPage = lazy(() => import("./pages/NotificationsPage.jsx"));
+const UserGuidePage = lazy(() => import("./pages/UserGuidePage.jsx"));
 
 function Guard({ children, roles }) {
   const { user, loading } = useAuth();
@@ -39,6 +40,7 @@ export default function App() {
       <Route path="stock-out" element={<Navigate to="/requisitions" replace />} />
       <Route path="notifications" element={<NotificationsPage />} />
       <Route path="reports" element={<ReportsPage />} />
+      <Route path="guide" element={<UserGuidePage />} />
       <Route path="users" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><UsersPage /></Guard>} />
       <Route path="audit-logs" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><AuditLogsPage /></Guard>} />
       <Route path="categories" element={<Guard roles={["SUPER_ADMIN", "ADMIN"]}><MasterPage resource="categories" title="หมวดหมู่สินค้า" fields={["name"]} /></Guard>} />
