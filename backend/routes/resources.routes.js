@@ -59,15 +59,6 @@ resourcesRouter.delete("/categories/:id", admins, asyncHandler(async (req, res) 
   res.json({ success: true });
 }));
 
-const supplierSchema = z.object({
-  name: z.string().trim().min(1).max(150),
-  contactPerson: z.string().max(120).optional().nullable(),
-  phone: z.string().max(40).optional().nullable(),
-  email: z.union([z.string().email(), z.literal("")]).optional().nullable(),
-  address: z.string().max(500).optional().nullable(),
-  notes: z.string().max(2000).optional().nullable()
-});
-const departmentSchema = z.object({ name: z.string().trim().min(1).max(100) });
 const unitSchema = z.object({
   name: z.string().trim().min(1).max(60),
   abbreviation: z.string().trim().max(20).optional().nullable(),
@@ -227,13 +218,7 @@ const userSchema = z.object({
   name: z.string().trim().min(1).max(120),
   email: z.string().email().transform((value) => value.toLowerCase()),
   password: z.string().min(10).regex(/[A-Z]/).regex(/[0-9]/),
-  role: z.enum(["ADMIN", "STAFF", "WAREHOUSE_STAFF", "USER"]),
-
-  active: z.boolean().optional()
-}).superRefine((data, context) => {
-  if (data.role === "USER" && !data.departmentId) {
-    context.addIssue({ code: "custom", path: ["departmentId"], message: "ผู้ใช้ต้องสังกัดแผนกเพื่อส่งคำขอเบิก" });
-  }
+  role: z.enum(["ADMIN", "STAFF", "WAREHOUSE_STAFF", "USER"]),   active: z.boolean().optional()
 });
 resourcesRouter.get("/users", admins, asyncHandler(async (req, res) => {
   const { skip, take } = pageParams(req.query);
@@ -253,7 +238,6 @@ resourcesRouter.post("/users", admins, asyncHandler(async (req, res) => {
       email: data.email,
       passwordHash: await bcrypt.hash(data.password, 12),
       roleId: role.id,
-      departmentId: data.departmentId || null
     },
     select: { id: true, name: true, email: true, active: true }
   });
@@ -277,17 +261,10 @@ resourcesRouter.put("/users/:id", admins, asyncHandler(async (req, res) => {
   const data = z.object({
     name: z.string().trim().min(1).max(120).optional(),
     email: z.string().email().transform((value) => value.toLowerCase()).optional(),
-    role: z.enum(["ADMIN", "STAFF", "WAREHOUSE_STAFF", "USER"]).optional(),
-
-  }).refine((value) => Object.keys(value).length > 0).parse(req.body);
+    role: z.enum(["ADMIN", "STAFF", "WAREHOUSE_STAFF", "USER"]).optional()   }).refine((value) => Object.keys(value).length > 0).parse(req.body);
   if (id === req.user.id && data.role) return res.status(400).json({ success: false, message: "ไม่สามารถเปลี่ยนสิทธิ์บัญชีตัวเองได้" });
   const target = await prisma.user.findUniqueOrThrow({ where: { id }, include: { role: true } });
   if (target.role.name === "SUPER_ADMIN") return res.status(403).json({ success: false, message: "ไม่สามารถแก้ไขบัญชี Super Admin ได้" });
-  const departmentId = Object.hasOwn(data, "departmentId") ? data.departmentId : target.departmentId;
-  const role = data.role || target.role.name;
-  if (role === "USER" && !departmentId) {
-    return res.status(400).json({ success: false, message: "ผู้ใช้ต้องสังกัดแผนกเพื่อส่งคำขอเบิก" });
-  }
   const previous = await prisma.user.findUniqueOrThrow({
     where: { id },
     select: { id: true, name: true, email: true, active: true, role: true, createdAt: true }
@@ -337,9 +314,6 @@ resourcesRouter.post("/movements/:type", warehouseOperators, asyncHandler(async 
   }
   const body = movementSchema.parse(req.body);
 
-  if (type === "STOCK_OUT" && (!body.requesterName || !body.purpose || !body.departmentId)) {
-    return res.status(400).json({ success: false, message: "กรุณาระบุผู้เบิก แผนก และวัตถุประสงค์" });
-  }
   const movement = await prisma.$transaction(async (tx) => {
     const duplicate = await tx.stockMovement.findUnique({ where: { referenceKey: body.referenceKey } });
     if (duplicate) {
@@ -376,8 +350,6 @@ resourcesRouter.post("/movements/:type", warehouseOperators, asyncHandler(async 
         unitCost: body.unitCost,
         movementDate: body.movementDate,
         documentNumber: body.documentNumber,
-        supplierId: body.supplierId,
-        departmentId: body.departmentId,
         requesterName: body.requesterName,
         purpose: body.purpose,
         notes: body.notes,
