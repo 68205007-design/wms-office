@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { api } from "../services/api.js";
-import { COLLEGE_LOGO, COLLEGE_NAME } from "../branding.js";
+import { COLLEGE_LOGO, COLLEGE_NAME, SYSTEM_LOGO } from "../branding.js";
 
 const navigation = [
   { to: "/", label: "ภาพรวม", icon: LayoutDashboard },
@@ -95,7 +95,7 @@ export default function Shell() {
   const roleLabel = { SUPER_ADMIN: "ผู้ดูแลสูงสุด", ADMIN: "ผู้ดูแลระบบ", STAFF: "เจ้าหน้าที่คลัง", WAREHOUSE_STAFF: "เจ้าหน้าที่คลัง", USER: "ผู้ขอเบิก" }[user?.role]; const displayName = user?.name === "System Administrator" ? "ผู้ดูแลสูงสุด" : user?.name;
   const sectionName = navigation.find((item) => item.to === location.pathname)?.label || "คลังสินค้า";
 
-  const submitSearch = (event) => {
+  const backgroundStyle = { "--site-background-image": `url("${SYSTEM_LOGO}")` }; const submitSearch = (event) => {
     event.preventDefault();
     const query = search.trim();
     if (!query) return;
@@ -103,7 +103,7 @@ export default function Shell() {
     setSearch("");
   };
 
-  return <div className="min-h-screen bg-[#FFFCF5] lg:flex">
+  return <div style={backgroundStyle} className="site-background relative isolate min-h-screen bg-[#FFFCF5] lg:flex">
     {mobileOpen && <button aria-label="ปิดเมนู" className="fixed inset-0 z-30 bg-slate-950/40 backdrop-blur-[2px] lg:hidden" onClick={() => setMobileOpen(false)} />}
     <aside className={`fixed inset-y-0 left-0 z-40 flex flex-col brand-pattern text-slate-200 shadow-xl shadow-slate-950/10 transition-all duration-200 lg:static lg:translate-x-0 ${collapsed ? "w-[84px]" : "w-[264px]"} ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
       <div aria-hidden="true" className="h-1 shrink-0 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
@@ -133,7 +133,7 @@ export default function Shell() {
         </div>
       </div>
     </aside>
-    <main className="min-w-0 flex-1">
+    <main className="relative z-10 min-w-0 flex-1">
       <header className="sticky top-0 z-20 flex min-h-[76px] items-center justify-between gap-4 border-b border-gold-200/70 bg-[#FFFDF9]/95 px-4 backdrop-blur-xl shadow-[0_1px_0_0_rgba(200,150,62,.25)] md:px-7">
         <div className="flex min-w-0 items-center gap-3">
           <button onClick={() => setMobileOpen(true)} className="rounded-xl p-2 text-slate-600 transition hover:bg-slate-100 lg:hidden" aria-label="เปิดเมนู"><Menu size={21} /></button>
