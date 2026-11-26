@@ -44,7 +44,7 @@ export default function StockIssuePage() {
     }
   };
 
-  const visible = requests.filter((request) => `${request.requestNumber} ${request.requester.name} ${request.department.name}`.toLowerCase().includes(filter.toLowerCase()));
+  const visible = requests.filter((request) => `${request.requestNumber} ${request.requester.name}`.toLowerCase().includes(filter.toLowerCase()));
   return <div className="space-y-5">
     <PageHeader title="จ่ายวัสดุ" description="ดำเนินการจ่ายจากคำขอที่ได้รับอนุมัติแล้ว ระบบจะตัดยอดคลังพร้อมบันทึกประวัติอัตโนมัติ" />
     <Notice message={message} type="success" />
@@ -59,7 +59,7 @@ export default function StockIssuePage() {
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2"><h3 className="text-sm font-bold text-[#6B1A17]">{request.requestNumber}</h3><span className="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-semibold text-blue-700">อนุมัติแล้ว</span></div>
-              <p className="mt-1 text-xs text-slate-500">{request.requester.name} · {request.department.name} · อนุมัติโดย {request.decidedBy?.name || "—"}</p>
+              <p className="mt-1 text-xs text-slate-500">{request.requester.name} · อนุมัติโดย {request.decidedBy?.name || "—"}</p>
               <p className="mt-2 text-sm text-slate-700">{request.purpose}</p>
               <div className="mt-3 flex flex-wrap gap-2">{request.items.map((item) => <span key={item.id} className={`rounded-lg px-2.5 py-1.5 text-[11px] ${item.product.stockQuantity < item.quantity ? "bg-rose-50 text-rose-700" : "bg-slate-50 text-slate-600"}`}>{item.product.name} <strong className="ml-1">{item.quantity} {item.product.unit}</strong><span className="ml-2">คงเหลือ {item.product.stockQuantity}</span></span>)}</div>
             </div>
