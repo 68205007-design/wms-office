@@ -50,8 +50,8 @@ reportsRouter.get("/movements", asyncHandler(async (req, res) => {
     where,
     include: {
       product: { include: { category: true } },
-      supplier: true,
-      department: true,
+
+
       createdBy: { select: { name: true } }
     },
     orderBy: { movementDate: "desc" },
@@ -68,7 +68,7 @@ reportsRouter.get("/export/:format", authorize("SUPER_ADMIN", "ADMIN"), asyncHan
     ? await stockRows(req.query)
     : await prisma.stockMovement.findMany({
       where: movementWhere(movementFilters),
-      include: { product: true, supplier: true, department: true, createdBy: true },
+      include: { product: true, createdBy: true },
       orderBy: { movementDate: "desc" },
       take: 5000
     });
