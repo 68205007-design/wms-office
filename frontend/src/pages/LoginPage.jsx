@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   ArrowRight, Check, Eye, EyeOff, KeyRound, LockKeyhole,
-  Mail, PackageCheck, ShieldCheck, Sparkles
+  Mail, ShieldCheck
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { getErrorMessage } from "../services/api.js";
@@ -58,14 +58,14 @@ export default function LoginPage() {
       </div>
 
       <div className="relative mt-14 max-w-xl xl:mt-[4.5rem]">
-        <span className="inline-flex items-center gap-2 rounded-full border border-gold-300/25 bg-white/[.07] px-3 py-1.5 text-[11px] font-medium tracking-wide text-gold-100">
-          <Sparkles size={14} className="text-sky-300" /> 
+        <span className="hidden">
+           
         </span>
         <h1 className="mt-6 text-[clamp(2.5rem,4vw,3.8rem)] font-bold leading-[1.2] tracking-tight">
-          ยินดีต้อนรับ<br />
+          ยินดีต้อนรับ
           
         </h1>
-        <p className="mt-5 max-w-md text-[15px] leading-7 text-gold-50/80">
+        <p className="hidden">
           
         </p>
       </div>
