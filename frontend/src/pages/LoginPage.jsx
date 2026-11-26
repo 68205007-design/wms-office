@@ -48,7 +48,7 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen bg-[#F0F5FB] text-[#122743]">
-      <div className="min-h-screen lg:grid lg:min-h-screen lg:grid-cols-[1.08fr_.92fr] lg:grid-rows-[minmax(660px,1fr)_52px]">
+      <div className="min-h-screen lg:grid lg:min-h-screen lg:grid-cols-[1.4fr_1fr] lg:grid-rows-[minmax(660px,1fr)_52px]">
         <section className="relative isolate flex min-h-[590px] flex-col overflow-hidden bg-[#08234D] px-6 py-7 text-white sm:px-10 sm:py-9 lg:row-start-1 lg:min-h-0 lg:px-12 lg:py-10 xl:px-16">
           <img aria-hidden="true" src={WAREHOUSE_BACKGROUND} alt="" className="absolute inset-0 h-full w-full object-cover object-center" />
           <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-br from-[#071A38]/90 via-[#0A3470]/78 to-[#061A36]/58" />
@@ -98,7 +98,7 @@ export default function LoginPage() {
           </div>
         </section>
 
-        <section className="relative flex min-h-[590px] items-center justify-center overflow-hidden bg-[linear-gradient(145deg,#F8FBFF_0%,#EDF4FC_100%)] px-5 py-12 sm:px-8 lg:row-start-1 lg:min-h-0 lg:px-10 xl:px-16">
+        <section className="relative flex min-h-[590px] items-center justify-center overflow-hidden bg-[linear-gradient(145deg,#F8FBFF_0%,#EDF4FC_100%)] px-5 py-12 sm:px-8 lg:row-start-1 lg:min-h-0 lg:px-10 xl:px-8">
           <div aria-hidden="true" className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-blue-200/20 blur-3xl" />
           <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 -left-24 h-80 w-80 rounded-full bg-sky-200/20 blur-3xl" />
           <div className="absolute right-5 top-5 hidden items-center gap-2 rounded-full border border-blue-100 bg-white/80 px-3 py-1.5 text-[10px] font-medium text-slate-500 shadow-sm sm:flex xl:right-8">
@@ -109,7 +109,7 @@ export default function LoginPage() {
             <span>{timeLabel}</span>
           </div>
 
-          <div className="relative w-full max-w-[440px]">
+          <div className="relative w-full max-w-[540px]">
             <div className="overflow-hidden rounded-[26px] border border-blue-100/80 bg-white shadow-[0_28px_80px_-36px_rgba(13,50,94,.32)]">
               <div aria-hidden="true" className="h-1.5 bg-gradient-to-r from-sky-400 via-blue-600 to-[#123B82]" />
               <div className="p-6 sm:p-9">
