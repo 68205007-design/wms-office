@@ -40,12 +40,12 @@ export default function LoginPage() {
     }
   };
 
-  return <main className="min-h-screen bg-[#FAF6EF] lg:grid lg:grid-cols-[minmax(0,1.08fr)_minmax(480px,.92fr)]">
-    <section className="relative hidden min-h-screen flex-col overflow-hidden bg-gradient-to-br from-[#7A231B] via-[#5E1814] to-[#3A0E0C] px-10 py-9 text-white lg:flex xl:px-14 xl:py-11">
+  return <main className="min-h-screen bg-[#FFFCF5] lg:grid lg:grid-cols-[minmax(0,1.08fr)_minmax(480px,.92fr)]">
+    <section className="relative hidden min-h-screen flex-col overflow-hidden brand-pattern px-10 py-9 text-white lg:flex xl:px-14 xl:py-11">
       <div aria-hidden="true" className="pointer-events-none absolute -right-36 -top-40 h-[540px] w-[540px] rounded-full border border-white/[.08]" />
       <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 h-[380px] w-[380px] rounded-full border border-white/[.08]" />
       <div aria-hidden="true" className="pointer-events-none absolute -bottom-48 -left-36 h-[460px] w-[460px] rounded-full bg-gold-500/10 blur-3xl" />
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[.07] [background-image:radial-gradient(circle_at_1px_1px,#F7ECD0_1px,transparent_0)] [background-size:22px_22px]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[.07] [background-image:radial-gradient(circle_at_1px_1px,#DCEFF1_1px,transparent_0)] [background-size:22px_22px]" />
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
 
       <div className="relative flex items-center gap-3">
@@ -105,7 +105,7 @@ export default function LoginPage() {
 
         <div className="mb-7">
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700"><span className="h-1.5 w-1.5 rounded-full bg-blue-600" /> ยินดีต้อนรับ</span>
-          <h2 className="mt-2 text-[32px] font-bold tracking-tight text-[#6B1A17]">เข้าสู่ระบบ</h2>
+          <h2 className="mt-2 text-[32px] font-bold tracking-tight text-[#0F4C5C]">เข้าสู่ระบบ</h2>
           <p className="mt-2 text-sm leading-6 text-slate-500">กรอกข้อมูลบัญชีเพื่อเข้าใช้งานระบบเบิก‑จ่ายวัสดุสำนักงาน</p>
         </div>
 
@@ -130,7 +130,7 @@ export default function LoginPage() {
             </button>
           </div>
 
-          <button type="submit" disabled={busy} className="group flex h-[50px] w-full items-center justify-center gap-2 rounded-xl bg-[#6B1A17] px-4 text-sm font-semibold text-white shadow-lg shadow-[#6B1A17]/15 transition duration-200 hover:-translate-y-0.5 hover:bg-[#7D221D] hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70">
+          <button type="submit" disabled={busy} className="group flex h-[50px] w-full items-center justify-center gap-2 rounded-xl bg-[#0F4C5C] px-4 text-sm font-semibold text-white shadow-lg shadow-[#0F4C5C]/15 transition duration-200 hover:-translate-y-0.5 hover:bg-[#0D4050] hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70">
             {busy ? <><span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />กำลังเข้าสู่ระบบ...</> : <>เข้าสู่ระบบ<ArrowRight size={17} className="transition-transform group-hover:translate-x-0.5" /></>}
           </button>
           <p className="mt-5 text-center text-[11px] leading-5 text-slate-400">บัญชีเริ่มต้นตั้งค่าผ่านคำสั่ง seed ของผู้ดูแลระบบ</p>
