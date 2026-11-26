@@ -63,7 +63,7 @@ export default function UserGuidePage() {
     <div className="space-y-5">
       <section className="rounded-2xl border border-blue-100 bg-blue-50 p-5 sm:p-6">
         <div className="flex items-start gap-3">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white text-blue-700"><BookOpen size={20} /></span>
+          <span className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-[#F8EEDF] text-[#6B1A17] shadow-sm ring-1 ring-[#C8963E]"><BookOpen size={30} strokeWidth={2.2} /></span>
           <div>
             <h2 className="font-bold text-slate-900">เริ่มต้นใช้งาน</h2>
             <p className="mt-1 text-sm leading-6 text-slate-700">เข้าสู่ระบบด้วยบัญชีที่ผู้ดูแลจัดเตรียมให้ แล้วเลือกเมนูจากแถบด้านซ้าย หน้าตาและโทนสีเหมือนกันทุกบัญชี ส่วนเมนูที่เห็นจะแตกต่างตามสิทธิ์การใช้งาน</p>
@@ -75,7 +75,7 @@ export default function UserGuidePage() {
         {steps.filter(({ roles }) => !roles || roles.includes(user.role)).map(({ icon: Icon, title, description, link, linkText }) => (
           <article key={title} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex items-start gap-3">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue-50 text-blue-700"><Icon size={19} /></span>
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-blue-50 text-blue-700"><Icon size={22} strokeWidth={2} /></span>
               <div>
                 <h2 className="font-bold text-slate-800">{title}</h2>
                 <p className="mt-1 text-sm leading-6 text-slate-600">{description}</p>
