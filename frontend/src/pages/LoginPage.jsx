@@ -78,7 +78,7 @@ export default function LoginPage() {
               <span><b className="font-semibold text-white">{title}</b> · {text}</span>
             </div>)}
         </div>
-        <div aria-hidden="true" className="relative hidden shrink-0 xl:block">
+        <div aria-hidden="true" className="hidden">
           <div className="absolute inset-0 -m-6 rounded-full bg-gold-400/20 blur-2xl" />
           <div className="relative grid h-56 w-56 place-items-center rounded-full bg-gradient-to-br from-gold-200 via-gold-400 to-gold-600 p-[6px] shadow-2xl shadow-black/30">
             <div className="grid h-full w-full place-items-center rounded-full bg-[#FBF6EC] p-3">
