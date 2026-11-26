@@ -6,7 +6,7 @@ import {
 import { useAuth } from "../context/AuthContext.jsx";
 import { getErrorMessage } from "../services/api.js";
 import Notice from "../components/Notice.jsx";
-import { COLLEGE_LOGO, COLLEGE_NAME } from "../branding.js";
+import { COLLEGE_LOGO, COLLEGE_NAME, SYSTEM_LOGO } from "../branding.js";
 
 const shelfBoxes = [
   "left-5 top-6 h-10 w-12 bg-blue-300/90",
@@ -27,7 +27,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const submit = async (event) => {
+  const backgroundStyle = { "--site-background-image": `url("${SYSTEM_LOGO}")` }; const submit = async (event) => {
     event.preventDefault();
     setBusy(true);
     setError("");
@@ -40,8 +40,8 @@ export default function LoginPage() {
     }
   };
 
-  return <main className="min-h-screen bg-[#FFFCF5] lg:grid lg:grid-cols-[minmax(0,1.08fr)_minmax(480px,.92fr)]">
-    <section className="relative hidden min-h-screen flex-col overflow-hidden brand-pattern px-10 py-9 text-white lg:flex xl:px-14 xl:py-11">
+  return <main style={backgroundStyle} className="site-background site-background--login relative isolate min-h-screen bg-[#FFFCF5] lg:grid lg:grid-cols-[minmax(0,1.08fr)_minmax(480px,.92fr)]">
+    <section className="relative z-10 hidden min-h-screen flex-col overflow-hidden brand-pattern px-10 py-9 text-white lg:flex xl:px-14 xl:py-11">
       <div aria-hidden="true" className="pointer-events-none absolute -right-36 -top-40 h-[540px] w-[540px] rounded-full border border-white/[.08]" />
       <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 h-[380px] w-[380px] rounded-full border border-white/[.08]" />
       <div aria-hidden="true" className="pointer-events-none absolute -bottom-48 -left-36 h-[460px] w-[460px] rounded-full bg-gold-500/10 blur-3xl" />
@@ -94,7 +94,7 @@ export default function LoginPage() {
       </div>
     </section>
 
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-5 py-10 sm:px-8 lg:px-12">
+    <section className="relative z-10 flex min-h-screen items-center justify-center overflow-hidden px-5 py-10 sm:px-8 lg:px-12">
       <div aria-hidden="true" className="pointer-events-none absolute -right-28 -top-28 h-72 w-72 rounded-full bg-blue-50 lg:hidden" />
       <div className="relative w-full max-w-[430px]">
         <div className="mb-10 flex min-w-0 items-center gap-2 lg:hidden">
