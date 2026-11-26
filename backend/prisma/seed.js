@@ -15,7 +15,7 @@ async function main() {
     const unit = await prisma.unit.upsert({ where: { name }, update: {}, create: { name } });
     await prisma.product.updateMany({ where: { unit: name, unitCatalogId: null }, data: { unitCatalogId: unit.id } });
   }
-  const { SUPER_ADMIN_EMAIL: email = "admin@wms.local", SUPER_ADMIN_NAME: name = "System Administrator" } = process.env;
+  const { SUPER_ADMIN_EMAIL: email = "admin@wms.local", SUPER_ADMIN_NAME: name = "ผู้ดูแลสูงสุด" } = process.env;
   let password = process.env.SUPER_ADMIN_PASSWORD;
   const existing = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
   // บนเซิร์ฟเวอร์ที่ไม่ได้กำหนดรหัสผ่าน: สุ่มรหัสครั้งแรกแล้วแสดงใน log ครั้งเดียว
