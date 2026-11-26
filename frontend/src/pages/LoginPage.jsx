@@ -1,12 +1,12 @@
 import { useState } from "react";
 import {
   ArrowRight, Check, Eye, EyeOff, KeyRound, LockKeyhole,
-  Mail, PackageCheck, ShieldCheck, Sparkles
+  Mail, PackageCheck, ShieldCheck
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { getErrorMessage } from "../services/api.js";
 import Notice from "../components/Notice.jsx";
-import { COLLEGE_LOGO, COLLEGE_NAME, SYSTEM_LOGO, SYSTEM_NAME } from "../branding.js";
+import { COLLEGE_LOGO, COLLEGE_NAME } from "../branding.js";
 
 const shelfBoxes = [
   "left-5 top-6 h-10 w-12 bg-blue-300/90",
@@ -49,24 +49,24 @@ export default function LoginPage() {
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300" />
 
       <div className="relative flex items-center gap-3">
-        <img src={SYSTEM_LOGO} alt="" className="h-12 w-12 shrink-0 rounded-full bg-white object-cover shadow-lg shadow-black/10 ring-2 ring-white/80" />
-        <img src={COLLEGE_LOGO} alt="" className="h-10 w-10 shrink-0 rounded-full border border-white/60 bg-white object-contain p-0.5 shadow-lg shadow-black/10" />
+        
+        <img src={COLLEGE_LOGO} alt={COLLEGE_NAME} className="h-16 w-16 shrink-0 rounded-full border border-white/60 bg-white object-contain p-0.5 shadow-lg shadow-black/10" />
         <div>
-          <p className="max-w-[360px] text-[13px] font-bold leading-5 text-white">{SYSTEM_NAME}</p>
-          <p className="mt-0.5 text-[10px] font-medium text-gold-200">{COLLEGE_NAME}</p>
+          
+          <p className="text-xl font-bold text-white">{COLLEGE_NAME}</p>
         </div>
       </div>
 
       <div className="relative mt-14 max-w-xl xl:mt-[4.5rem]">
         <span className="inline-flex items-center gap-2 rounded-full border border-gold-300/25 bg-white/[.07] px-3 py-1.5 text-[11px] font-medium tracking-wide text-gold-100">
-          <Sparkles size={14} className="text-sky-300" /> คลังสินค้า จัดการได้อย่างมั่นใจ
+          <Sparkles size={14} className="text-sky-300" /> 
         </span>
         <h1 className="mt-6 text-[clamp(2.5rem,4vw,3.8rem)] font-bold leading-[1.2] tracking-tight">
-          ทุกการเคลื่อนไหว<br />
-          <span className="text-[#E5C07B]">ชัดเจนในที่เดียว</span>
+          ยินดีต้อนรับ<br />
+          <span className="text-[#E5C07B]"></span>
         </h1>
         <p className="mt-5 max-w-md text-[15px] leading-7 text-gold-50/80">
-          ดูแลสินค้า รับเข้า เบิกจ่าย และติดตามสถานะคลังได้อย่างเป็นระบบ พร้อมข้อมูลที่ตรวจสอบย้อนหลังได้
+          
         </p>
       </div>
 
@@ -98,13 +98,13 @@ export default function LoginPage() {
       <div aria-hidden="true" className="pointer-events-none absolute -right-28 -top-28 h-72 w-72 rounded-full bg-blue-50 lg:hidden" />
       <div className="relative w-full max-w-[430px]">
         <div className="mb-10 flex min-w-0 items-center gap-2 lg:hidden">
-          <img src={SYSTEM_LOGO} alt="" className="h-10 w-10 shrink-0 rounded-full bg-white object-cover shadow-sm ring-1 ring-slate-200" />
-          <img src={COLLEGE_LOGO} alt={COLLEGE_NAME} className="h-8 w-8 shrink-0 rounded-full bg-white object-contain p-0.5 ring-1 ring-slate-200" />
-          <div className="min-w-0"><p className="text-[11px] font-bold leading-4 text-[#6B1A17]">{SYSTEM_NAME}</p><p className="mt-0.5 truncate text-[9px] font-medium text-blue-600">{COLLEGE_NAME}</p></div>
+          
+          <img src={COLLEGE_LOGO} alt={COLLEGE_NAME} className="h-16 w-16 shrink-0 rounded-full bg-white object-contain p-0.5 ring-1 ring-slate-200" />
+          <div className="min-w-0"><p className="mt-0.5 text-sm font-semibold text-blue-700">{COLLEGE_NAME}</p></div>
         </div>
 
         <div className="mb-7">
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700"><span className="h-1.5 w-1.5 rounded-full bg-blue-600" /> ยินดีต้อนรับกลับ</span>
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700"><span className="h-1.5 w-1.5 rounded-full bg-blue-600" /> ยินดีต้อนรับ</span>
           <h2 className="mt-2 text-[32px] font-bold tracking-tight text-[#6B1A17]">เข้าสู่ระบบ</h2>
           <p className="mt-2 text-sm leading-6 text-slate-500">กรอกข้อมูลบัญชีเพื่อเข้าใช้งานระบบเบิก‑จ่ายวัสดุสำนักงาน</p>
         </div>
@@ -115,7 +115,7 @@ export default function LoginPage() {
           <label htmlFor="login-email" className="mb-2 block text-sm font-semibold text-slate-700">อีเมล</label>
           <div className="mb-5 flex h-[50px] items-center gap-2.5 rounded-xl border border-slate-200 bg-[#FCFAF6] px-3.5 transition focus-within:border-blue-400 focus-within:bg-white focus-within:ring-4 focus-within:ring-blue-50">
             <Mail size={18} className="shrink-0 text-slate-400" />
-            <input id="login-email" required type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} aria-invalid={Boolean(error)} className="h-full w-full border-0 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400" placeholder="name@company.com" />
+            <input id="login-email" required type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} aria-invalid={Boolean(error)} className="h-full w-full border-0 bg-transparent text-sm text-slate-800 outline-none placeholder:text-slate-400" placeholder="กรอกอีเมลของคุณ" />
           </div>
 
           <div className="mb-2 flex items-center justify-between">
