@@ -24,7 +24,7 @@ const requestItemsSchema = z.array(z.object({
 
 const includeRequisition = {
   requester: { select: { id: true, name: true, email: true } },
-  department: true,
+
   decidedBy: { select: { id: true, name: true } },
   items: { include: { product: { include: { category: true, catalogUnit: true } }, movement: true } }
 };
@@ -64,7 +64,7 @@ requisitionsRouter.get("/", asyncHandler(async (req, res) => {
 
 requisitionsRouter.post("/", authorize("USER"), asyncHandler(async (req, res) => {
   const body = z.object({
-    departmentId: z.coerce.number().int().positive(),
+
     purpose: z.string().trim().min(1).max(500),
     items: requestItemsSchema
   }).parse(req.body);
@@ -79,7 +79,7 @@ requisitionsRouter.post("/", authorize("USER"), asyncHandler(async (req, res) =>
       data: {
         requestNumber,
         requesterId: req.user.id,
-        departmentId: body.departmentId,
+
         purpose: body.purpose,
         items: { create: body.items }
       },
@@ -193,7 +193,7 @@ requisitionsRouter.post("/:id/fulfill", warehouseStaff, asyncHandler(async (req,
           productId: item.productId,
           quantity: item.quantity,
           movementDate: new Date(),
-          departmentId: requisition.departmentId,
+
           requesterName: requisition.requester.name,
           purpose: requisition.purpose,
           documentNumber: requisition.requestNumber,
