@@ -6,7 +6,7 @@
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; min-height: 100vh; }
 button, input, select, textarea { font: inherit; }
-button { cursor: pointer; }
+button { cursor: pointer; } [class~="text-[9px]"], [class~="text-[10px]"] { font-size: 0.75rem; } [class~="text-[11px]"] { font-size: 0.8125rem; } [class~="text-[12px]"] { font-size: 0.875rem; } [class~="text-[13px]"] { font-size: 0.9375rem; } [class~="text-[15px]"] { font-size: 1.0625rem; } [class~="text-[27px]"] { font-size: 1.875rem; } [class~="text-[28px]"] { font-size: 2rem; }
 .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
 .scrollbar-thin::-webkit-scrollbar-thumb { background: #D2C8BA; border-radius: 6px; }
 .surface-card { @apply rounded-2xl border border-gold-100 bg-white shadow-[0_1px_2px_rgba(74,19,17,.05),0_8px_24px_-18px_rgba(74,19,17,.25)]; }
