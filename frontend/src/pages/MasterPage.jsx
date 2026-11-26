@@ -7,7 +7,7 @@ import Notice from "../components/Notice.jsx";
 import ConfirmDialog from "../components/ConfirmDialog.jsx";
 import Pagination from "../components/Pagination.jsx";
 
-const labels = { name: "ชื่อ", abbreviation: "ตัวย่อ", contactPerson: "ผู้ติดต่อ", phone: "โทรศัพท์", email: "อีเมล" };
+const labels = { name: "ชื่อ", abbreviation: "ตัวย่อ" };
 const initialFor = (fields) => Object.fromEntries(fields.map((field) => [field, ""]));
 const pageSize = 10;
 export default function MasterPage({ resource, title, fields }) {
@@ -37,7 +37,7 @@ export default function MasterPage({ resource, title, fields }) {
     event.preventDefault(); setError("");
     try {
       const payload = { ...form };
-      if (resource === "suppliers") for (const key of ["contactPerson", "phone", "email"]) if (payload[key] === "") payload[key] = null;
+
       await (editing ? api.put(`/${resource}/${editing.id}`, payload) : api.post(`/${resource}`, payload));
       setOpen(false); setMessage(editing ? "แก้ไขข้อมูลแล้ว" : "เพิ่มข้อมูลแล้ว"); await load();
     } catch (e) { setError(getErrorMessage(e)); }
@@ -66,7 +66,7 @@ export default function MasterPage({ resource, title, fields }) {
     {deleting && <ConfirmDialog title="ยืนยันการลบข้อมูล" description={`ต้องการลบ “${deleting.name}” หรือไม่?`} onClose={() => setDeleting(null)} onConfirm={remove} busy={busy} />}
     {open && <Modal title={`${editing ? "แก้ไข" : "เพิ่ม"}${title}`} onClose={() => setOpen(false)}><Notice message={error} /><form onSubmit={submit} className="space-y-4">
       {fields.map((field) => <label key={field} className="block text-sm font-medium text-slate-700">{labels[field] || field}<input required={field === "name"} type={field === "email" ? "email" : "text"} value={form[field]} onChange={(e) => setForm({ ...form, [field]: e.target.value })} className="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 outline-none focus:border-sky-500" /></label>)}
-      {resource === "suppliers" && <><label className="block text-sm font-medium text-slate-700">ที่อยู่<textarea rows={2} value={form.address || ""} onChange={(e) => setForm({ ...form, address: e.target.value })} className="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5" /></label><label className="block text-sm font-medium text-slate-700">หมายเหตุ<textarea rows={2} value={form.notes || ""} onChange={(e) => setForm({ ...form, notes: e.target.value })} className="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5" /></label></>}
+
       <div className="flex justify-end gap-2"><button type="button" onClick={() => setOpen(false)} className="rounded-lg border border-slate-200 px-4 py-2.5 text-sm">ยกเลิก</button><button className="rounded-lg bg-navy-950 px-5 py-2.5 text-sm font-semibold text-white">บันทึก</button></div>
     </form></Modal>}
   </>;
