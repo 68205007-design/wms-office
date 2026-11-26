@@ -149,8 +149,8 @@ model Requisition {
   requestNumber String            @unique @db.VarChar(40)
   requesterId   Int
   requester     User              @relation("RequisitionRequester", fields: [requesterId], references: [id])
-  departmentId  Int
-  department    Department        @relation(fields: [departmentId], references: [id])
+  departmentId  Int?
+  department    Department?       @relation(fields: [departmentId], references: [id])
   purpose       String            @db.VarChar(500)
   status        RequisitionStatus @default(PENDING)
   decisionNote  String?           @db.VarChar(500)
